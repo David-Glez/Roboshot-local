@@ -14,6 +14,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
+
+// rutas inicio de sesion
+Route::post('/login', 'InicioController@inicioSesion');
+
+// rutas para recetas
+Route::get('/recetas', 'RecetasController@inicio');
+Route::post('/receta/nuevo', 'RecetasController@anadirReceta');
+Route::get('/receta/busca/{idReceta}', 'RecetasController@buscaReceta');
+
+//rutas para ingredientes
+Route::get('/ingredientes', 'IngredientesController@inicio');
+Route::post('/ingredientes/nuevo', 'IngredientesController@anadirIngrediente');
+Route::post('/ingredientes/eliminar', 'IngredientesController@eliminarIngrediente');
+
+//rutas para categorias
+Route::get('/categorias', 'CategoriasController@inicio');
+Route::post('/categorias/nuevo', 'CategoriasController@anadirCategoria');

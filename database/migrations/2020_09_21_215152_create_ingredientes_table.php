@@ -14,7 +14,12 @@ class CreateIngredientesTable extends Migration
     public function up()
     {
         Schema::create('ingredientes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('idIngrediente')->unique();
+            $table->integer('idCategoria');
+            $table->string('marca')->nullable();
+            $table->float('precio', 4,2);
+            $table->integer('cantidad');
+            $table->integer('posicion');
             $table->timestamps();
         });
     }

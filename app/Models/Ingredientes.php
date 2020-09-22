@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ingredientes extends Model
 {
-    use HasFactory;
+    protected $table = 'ingredientes';
+    protected $primaryKey = 'idIngrediente';
+    protected $fillable = [
+        'idCategoria', 'marca', 'precio', 'cantidad', 'posicion'
+    ];
 }
