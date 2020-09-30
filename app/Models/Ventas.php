@@ -10,6 +10,6 @@ class Ventas extends Model
     protected $table = 'ventas';
     protected $primaryKey = 'idVenta';
     protected $fillable = [
-        'idReceta', 'fecha', 'hora',
+        'idReceta','precio', 'fecha', 'hora',
     ];
 }

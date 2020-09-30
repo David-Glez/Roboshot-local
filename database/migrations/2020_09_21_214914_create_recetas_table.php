@@ -18,8 +18,8 @@ class CreateRecetasTable extends Migration
             $table->string('nombre')->nullable();
             $table->string('descripcion')->nullable();
             $table->float('precio', 4,2);
-            $table->integer('cantidad');
             $table->string('img')->nullable()->default('/images/camera.jpg');
+            $table->boolean('activa');
             $table->timestamps();
         });
     }

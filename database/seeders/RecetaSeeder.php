@@ -15,6 +15,14 @@ class RecetaSeeder extends Seeder
     public function run()
     {
         DB::table('recetas')->insert([
+        	'nombre' => 'Personalizada',
+			'descripcion' => 'Bebida personalizada por el cliente',
+            'precio' => 0.0,
+            'img' => '/images/camera.jpg',
+            'activa' => false
+        ]);
+
+        /*DB::table('recetas')->insert([
         	'nombre' => 'Paloma',
 			'descripcion' => 'Bebida de tequila con refresco de toronja',
             'precio' => 25.00,
@@ -28,6 +36,6 @@ class RecetaSeeder extends Seeder
             'precio' => 30.00,
             'cantidad' => 200,
             'img' => '/images/camera.jpg'
-        ]);
+        ]);*/
     }
 }

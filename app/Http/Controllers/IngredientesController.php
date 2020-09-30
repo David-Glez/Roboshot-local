@@ -64,4 +64,10 @@ class IngredientesController extends Controller
 
         return response()->json($respuesta);
     }
+    /***** Muestra los ingredientes registrados por Categoria*****/
+    public function ingredienteCategoria($Categoria){
+        $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->get();
+
+        return response()->json($ingredientes);
+    }
 }

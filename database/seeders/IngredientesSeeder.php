@@ -70,7 +70,7 @@ class IngredientesSeeder extends Seeder
             'posicion' => 7
         ]);
 
-        DB::table('ingredientes')->insert([
+        /*DB::table('ingredientes')->insert([
             'idCategoria' => 0,
             'marca' => 'Sal',
             'precio' => 1,
@@ -84,6 +84,6 @@ class IngredientesSeeder extends Seeder
             'precio' => 1,
             'cantidad' => 2000,
             'posicion' => 20
-        ]);
+        ]);*/
     }
 }

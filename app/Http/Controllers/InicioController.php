@@ -31,4 +31,12 @@ class InicioController extends Controller
     
         return response()->json($datos);
     }
+
+    public function creaUsuario(Request $request){
+        DB::table('usuarios')->insert([
+            'nombre' => $request->usuario,
+            'password' => bcrypt($request->contraseña),
+            'idRol' => $request->rol
+        ]);
+    }
 }
