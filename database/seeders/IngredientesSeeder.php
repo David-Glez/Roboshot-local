@@ -19,7 +19,9 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Cazadores',
             'precio' => 25.00,
             'cantidad' => 2000,
-            'posicion' => 1
+            'posicion' => 1,
+            'precioCompra' => 600,
+            'precioVenta' => 5000
         ]);
 
         DB::table('ingredientes')->insert([
@@ -27,7 +29,9 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Smirnoff',
             'precio' => 35.00,
             'cantidad' => 2000,
-            'posicion' => 2
+            'posicion' => 2,
+            'precioCompra' => 700,
+            'precioVenta' => 7000
         ]);
 
         DB::table('ingredientes')->insert([
@@ -35,7 +39,9 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Controy',
             'precio' => 25.00,
             'cantidad' => 2000,
-            'posicion' => 3
+            'posicion' => 3, 
+            'precioCompra' => 700,
+            'precioVenta' => 5000
         ]);
 
         DB::table('ingredientes')->insert([
@@ -43,7 +49,9 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Squirt',
             'precio' => 10.00,
             'cantidad' => 2000,
-            'posicion' => 4
+            'posicion' => 4,
+            'precioCompra' => 30,
+            'precioVenta' => 2000
         ]);
 
         DB::table('ingredientes')->insert([
@@ -51,7 +59,9 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Jarabe Natural',
             'precio' => 10.00,
             'cantidad' => 2000,
-            'posicion' => 5
+            'posicion' => 5, 
+            'precioCompra' => 70,
+            'precioVenta' => 2000
         ]);
 
         DB::table('ingredientes')->insert([
@@ -59,7 +69,9 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Jugo de Arandano',
             'precio' => 12.00,
             'cantidad' => 2000,
-            'posicion' => 6
+            'posicion' => 6,
+            'precioCompra' => 70,
+            'precioVenta' => 2400
         ]);
 
         DB::table('ingredientes')->insert([
@@ -67,7 +79,9 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Jugo de Limón',
             'precio' => 15.00,
             'cantidad' => 2000,
-            'posicion' => 7
+            'posicion' => 7,
+            'precioCompra' => 70,
+            'precioVenta' => 3000
         ]);
 
         /*DB::table('ingredientes')->insert([

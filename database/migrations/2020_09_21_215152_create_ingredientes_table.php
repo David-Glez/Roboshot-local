@@ -20,6 +20,8 @@ class CreateIngredientesTable extends Migration
             $table->float('precio', 4,2);
             $table->integer('cantidad');
             $table->integer('posicion');
+            $table->float('precioCompra', 4,2);
+            $table->float('precioVenta', 4,2);
             $table->foreign('idCategoria')->references('idCategoria')->on('categorias');
             $table->timestamps();
         });

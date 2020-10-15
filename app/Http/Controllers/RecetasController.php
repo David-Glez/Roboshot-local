@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Recetas;
 use App\Models\RecetaIngrediente;
 use App\Models\Ingredientes;
-use App\Models\Ventas;
 
 
 class RecetasController extends Controller
@@ -60,11 +59,13 @@ class RecetasController extends Controller
 
         //$array = $request->ingredientes;
         foreach($array as $key => $val) {
-            $ingre = new RecetaIngrediente;
-            $ingre->idReceta = $id;
-            $ingre->idIngrediente = $key;
-            $ingre->cantidad = $val;
-            $ingre->save();
+            if($val != 0){
+                $ingre = new RecetaIngrediente;
+                $ingre->idReceta = $id;
+                $ingre->idIngrediente = $key;
+                $ingre->cantidad = $val;
+                $ingre->save();
+            }
         }
         
         $ingredientes = RecetaIngrediente::where('idReceta','=',$id)->join('ingredientes', 'ingredientes.idIngrediente','=','recetaIngrediente.idIngrediente')->select('ingredientes.marca')->get();
@@ -77,63 +78,5 @@ class RecetasController extends Controller
         return response()->json($data);
     }
 
-    //Descuenta los ingredintes de una receta precreada
-    public function descuentaIngredientes(Request $request){
-        $sobrante = [];
-        for($i=0; $i<count($request->bebidas); $i++){
-            foreach( $request->bebidas[$i] as $key => $val) {
-                $id = $val; //id de receta
-                $listaIngredientes = RecetaIngrediente::where('idReceta','=',$id)->select('idIngrediente','cantidad')->get();
-                foreach($listaIngredientes as $lista){
-                    $descuento = 0;
-                    $ing = Ingredientes::find($lista->idIngrediente);
-                    $descuento = $ing->cantidad - $lista->cantidad;
-                    $ing->cantidad = $descuento;
-                    $sobrante[] = array(
-                        $ing->marca => $descuento
-                    );
-                    $ing->save(); 
-                    //validar si queda poca cantidad
-                }
-                $receta = Recetas::find($id);
-                $fecha = date_create();
-                $venta = new Ventas;
-                $venta->idReceta = $id;
-                $venta->precio = $receta->precio;
-                $venta->fecha = date('d/m/Y');
-                $venta->hora = date_format($fecha, 'H:i:s');
-                $venta->save();
-            break;
-            }
-        }
-        $msj = array(
-            "mensaje" => "Se descontaron los ingredientes"
-        );
-        return response()->json($msj);
-    }
-
-    public function descuentaIngredientesPersonalizado(Request $request){
-        $array = json_decode( $request->ingredientes );
-        foreach($array as $key => $val) {
-            if($val != 0){
-                $descuento = 0;
-                $ing = Ingredientes::find($key);
-                $descuento = $ing->cantidad - $val;
-                $ing->cantidad = $descuento;
-                $ing->save();
-            }    
-        }
-        $fecha = date_create();
-        $venta = new Ventas;
-        $venta->idReceta = 1;
-        $venta->precio = $request->total;
-        $venta->fecha = date('d/m/Y');
-        $venta->hora = date_format($fecha, 'H:i:s');
-        $venta->save();
-
-        $msj = array(
-            "mensaje" => "Se descontaron los ingredientes"
-        );
-        return response()->json($msj);
-    }
+    
 }

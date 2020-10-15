@@ -23,17 +23,16 @@ Route::post('/login', 'InicioController@inicioSesion');
 
 // rutas para recetas
 Route::get('/recetas', 'RecetasController@inicio');
-Route::get('/prueba', 'RecetasController@prueba');
+Route::get('/prueba', 'RecetasController@suma');
 Route::post('/recetas/nuevo', 'RecetasController@anadirReceta');
 Route::get('/recetas/busca/{idReceta}', 'RecetasController@buscaReceta');
-Route::post('/recetas/descuenta', 'RecetasController@descuentaIngredientes');
-Route::post('/recetas/descuenta/personalizado', 'RecetasController@descuentaIngredientesPersonalizado');
 
 //rutas para ingredientes
 Route::get('/ingredientes', 'IngredientesController@inicio');
 Route::post('/ingredientes/nuevo', 'IngredientesController@anadirIngrediente');
 Route::post('/ingredientes/eliminar', 'IngredientesController@eliminarIngrediente');
 Route::get('/ingredientes/{categoria}', 'IngredientesController@ingredienteCategoria');
+Route::post('/ingredientes/descuenta', 'IngredientesController@descuentaIngredientes');
 
 //rutas para categorias
 Route::get('/categorias', 'CategoriasController@inicio');

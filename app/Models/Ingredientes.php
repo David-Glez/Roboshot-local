@@ -10,6 +10,6 @@ class Ingredientes extends Model
     protected $table = 'ingredientes';
     protected $primaryKey = 'idIngrediente';
     protected $fillable = [
-        'idCategoria', 'marca', 'precio', 'cantidad', 'posicion'
+        'idCategoria', 'marca', 'precio', 'cantidad', 'posicion','precioCompra','precioVenta'
     ];
 }
