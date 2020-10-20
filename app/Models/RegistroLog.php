@@ -11,6 +11,6 @@ class RegistroLog extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [
-        'fecha', 'hora', 'operacion', 'disparador', 'tabla', 'esquema', 'descripcion',
+        'fecha', 'hora', 'operacion', 'disparador', 'tabla', 'esquema', 'descripcion', 'anterior', 'nuevo'
     ];
 }

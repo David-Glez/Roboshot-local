@@ -23,6 +23,8 @@ class RegistroLog extends Migration
            $table->string('tabla')->nullable()->default('-');
            $table->string('esquema')->nullable()->default('-');
            $table->string('descripcion')->nullable()->default('-');
+           $table->string('anterior')->nullable()->default('-');
+           $table->string('nuevo')->nullable()->default('-');
 
         });
     }
