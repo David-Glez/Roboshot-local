@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RecetaIngrediente extends Model
 {
     protected $table = 'recetaIngrediente';
+    public $incrementing = false;
     protected $fillable = [
         'idReceta', 'idIngrediente', 'cantidad',
     ];

@@ -37,32 +37,38 @@ class RecetasController extends Controller
 
     /***** Inserta una nueva receta en la BD*****/
     public function anadirReceta(Request $request){
+        //return response()->json($request);
         $array = json_decode( $request->ingredientes );
         /*foreach($array as $key => $val) {
             echo "<script>console.log( 'Debug Objects: " . $val . "' );</script>";
         }*/
-       
+       if($request->imagen == null){
+           $verificaIMG = '/images/camera.jpg';
+       }else{
+           $verificaIMG = $request->imagen;
+       }
         $receta = new Recetas;
         $receta->nombre = $request->nombre;
         $receta->precio = $request->precio;
         $receta->descripcion = $request->descripcion;
-        $receta->img = $request->imagen;
+        $receta->img = $verificaIMG;
         $receta->activa = true;
         $receta->save();
 
         $id = $receta->idReceta;
-
+        $p = 0;
         //$array = $request->ingredientes;
         foreach($array as $key => $val) {
             if($val != 0){
+                
                 $ingre = new RecetaIngrediente;
                 $ingre->idReceta = $id;
-                $ingre->idIngrediente = $key;
-                $ingre->cantidad = $val;
+                $ingre->idIngrediente = intval($key);
+                $ingre->cantidad = intval($val);
                 $ingre->save();
             }
         }
-        
+
         $ingredientes = RecetaIngrediente::where('idReceta','=',$id)->join('ingredientes', 'ingredientes.idIngrediente','=','recetaIngrediente.idIngrediente')->select('ingredientes.marca')->get();
 
         $data = array(
