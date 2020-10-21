@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 // rutas inicio de sesion
 Route::post('/login', 'InicioController@inicioSesion');
+Route::post('/logout', 'InicioController@cerrarSesion');
 
 // rutas para recetas
 Route::get('/recetas', 'RecetasController@inicio');
@@ -30,7 +31,13 @@ Route::get('/receta/busca/{idReceta}', 'RecetasController@buscaReceta');
 Route::get('/ingredientes', 'IngredientesController@inicio');
 Route::post('/ingredientes/nuevo', 'IngredientesController@anadirIngrediente');
 Route::post('/ingredientes/eliminar', 'IngredientesController@eliminarIngrediente');
+Route::get('/ingredientes/{categoria}', 'IngredientesController@ingredienteCategoria');
+Route::post('/ingredientes/descuenta', 'IngredientesController@descuentaIngredientes');
 
 //rutas para categorias
 Route::get('/categorias', 'CategoriasController@inicio');
 Route::post('/categorias/nuevo', 'CategoriasController@anadirCategoria');
+ 
+
+//rutas para ventas
+Route::get('/ventas', 'VentasController@index');

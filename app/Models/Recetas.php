@@ -10,6 +10,6 @@ class Recetas extends Model
     protected $table = 'recetas';
     protected $primaryKey = 'idReceta';
     protected $fillable = [
-        'nombre', 'descripcion', 'precio', 'cantidad', 'img'
+        'nombre', 'descripcion', 'precio', 'activa', 'img'
     ];
 }

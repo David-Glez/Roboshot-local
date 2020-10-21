@@ -16,9 +16,12 @@ class CreateVentasTable extends Migration
         Schema::create('ventas', function (Blueprint $table) {
             $table->bigIncrements('idVenta')->unique();
             $table->integer('idReceta');
+            $table->float('precio');
+            $table->float('ganancia');
             $table->date('fecha');
             $table->time('hora');
-            #$table->foreign('idReceta')->references('idReceta')->on('recetas');
+            //$table->foreign('idReceta')->references('idReceta')->on('recetas');
+            $table->timestamps();
         });
     }
 
