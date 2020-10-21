@@ -15,10 +15,17 @@ class RecetaSeeder extends Seeder
     public function run()
     {
         DB::table('recetas')->insert([
+        	'nombre' => 'Personalizada',
+			'descripcion' => 'Bebida personalizada por el cliente',
+            'precio' => 0.0,
+            'activa' => false,
+            'img' => '/images/camera.jpg'
+        ]);
+        /*DB::table('recetas')->insert([
         	'nombre' => 'Paloma',
 			'descripcion' => 'Bebida de tequila con refresco de toronja',
             'precio' => 25.00,
-            'cantidad' => 300,
+            'activa' => true,
             'img' => '/images/camera.jpg'
         ]);
 
@@ -26,8 +33,8 @@ class RecetaSeeder extends Seeder
         	'nombre' => 'Cosmopolitan',
 			'descripcion' => 'Bebida de vodka con jugo de arandano, Controy y jarabe natual',
             'precio' => 30.00,
-            'cantidad' => 200,
+            'activa' => true,
             'img' => '/images/camera.jpg'
-        ]);
+        ]);*/
     }
 }
