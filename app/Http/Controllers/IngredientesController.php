@@ -111,6 +111,20 @@ class IngredientesController extends Controller
             $venta->fecha = $fecha->format('d-m-Y');
             $venta->hora = $fecha->format('H:i:s');
             $venta->save();
+
+            $idVenta = $venta->idVenta;
+
+            // insertar ingredientes vendidos de acuerdo al id de venta
+            foreach($array as $key => $val){
+                if($val != 0){
+                    $ingManual = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
+                    $recetaManual = new recetaIngredienteManual;
+                    $recetaManual->codPedido = $idVenta;
+                    $recetaManual->idIngrediente = $ingManual->idIngrediente;
+                    $recetaManual->cantidad = $val;
+                    $recetaManual->save();
+                }
+            }
         }else{
             for($i=0; $i<count($request->bebidas); $i++){
                 foreach( $request->bebidas[$i] as $key => $val) {
