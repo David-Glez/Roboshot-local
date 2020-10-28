@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+
 use App\Models\Ingredientes;
 use App\Models\RecetaIngrediente;
 use App\Models\Ventas;
+use App\Models\Recetas;
+use App\Models\RecetaIngredienteManual;
 
 class IngredientesController extends Controller
 {
@@ -24,7 +28,8 @@ class IngredientesController extends Controller
             $nuevoIngrediente->idCategoria = $request->categoria;
             $nuevoIngrediente->marca = $request->marca;
             $nuevoIngrediente->precio = $request->precio;
-            $nuevoIngrediente->cantidad = $request->cantidad;
+            $nuevoIngrediente->cantidadTotal = $request->cantidad;
+            $nuevoIngrediente->cantidadDisponible = $request->cantidad;
             $nuevoIngrediente->posicion = $request->posicion;
             $nuevoIngrediente->save();
 
@@ -65,37 +70,63 @@ class IngredientesController extends Controller
 
         return response()->json($respuesta);
     }
-    /***** Muestra los ingredientes registrados por Categoria*****/
+
+    // muestra ingrediente por categoria 
     public function ingredienteCategoria($Categoria){
         $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->get();
 
         return response()->json($ingredientes);
     }
 
+    // funcion para descontar ingredientes al solicitar receta
     public function descuentaIngredientes(Request $request){
+
+        //en el caso de que la receta a descontar sea personalizada
         if($request->personalizado == true){
-            $array = json_decode( $request->ingredientes );
+            //decodifica la lista de ingredientes
+            $array = json_decode($request->ingredientes);
             $ganancia = 0;
-            foreach($array as $key => $val) {
+
+            // se recorre el arreglo de ingredientes
+            foreach($array as $key => $val){
                 if($val != 0){
                     $descuento = 0;
-                    $ing = Ingredientes::where('posicion',$key)->first(); #buscamos el ingrediente
-                    $descuento = $ing->cantidad - $val;# drementamos la cantidad disponible
-                    $ing->cantidad = $descuento;# asignamos la nueva cantidad
-                    $shot = $val/10;#sacamos el numero de shot's
+                    $ing = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
+                    $descuento = $ing->cantidadDisponible - $val; #se decrementa la cantidad disponible
+                    $ing->cantidadDisponible = $descuento; #se asigna nueva cantidad disponible
+                    $shot = $val/10; #numero de shots
                     $ganancia += ( ($ing->precioVenta - $ing->precioCompra) / ($ing->precioVenta / $ing->precio) ) * $shot  ; #sacamos ( (gananciatotal) / (numero de shot's) * shot's comprados)
-                    $ing->save();
-                }    
+                    $ing->save(); #se guardan cambios en la tabla
+                }
             }
-            $fecha = date_create();
+
+            // se crea el registro de la venta
+            //$fecha = date_create();
+            $fecha = Carbon::now();
+
             $venta = new Ventas;
             $venta->idReceta = 1;
             $venta->precio = $request->total;
             $venta->ganancia = $ganancia;
-            $venta->fecha = date('d/m/Y');
-            $venta->hora = date_format($fecha, 'H:i:s');
+            $venta->fecha = $fecha->format('d-m-Y');
+            $venta->hora = $fecha->format('H:i:s');
             $venta->save();
-        } else{
+
+            $idVenta = $venta->idVenta;
+
+            // insertar ingredientes vendidos de acuerdo al id de venta
+            foreach($array as $key => $val){
+                if($val != 0){
+                    $ingManual = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
+                    $recetaManual = new recetaIngredienteManual;
+                    $recetaManual->codPedido = $idVenta;
+                    $recetaManual->idIngrediente = $ingManual->idIngrediente;
+                    $recetaManual->cantidad = $val;
+                    $recetaManual->save();
+                }
+            }
+        }else{
+
             for($i=0; $i<count($request->bebidas); $i++){
                 foreach( $request->bebidas[$i] as $key => $val) {
                     $id = $val; //id de receta
@@ -104,20 +135,21 @@ class IngredientesController extends Controller
                     foreach($listaIngredientes as $lista){
                         $descuento = 0;
                         $ing = Ingredientes::find($lista->idIngrediente);
-                        $descuento = $ing->cantidad - $lista->cantidad;
-                        $ing->cantidad = $descuento;
+                        $descuento = $ing->cantidadDisponible - $lista->cantidad;
+                        $ing->cantidadDisponible = $descuento;
                         $ganancia += ( ($ing->precioVenta - $ing->precioCompra) / ($ing->precioVenta / $ing->precio) )* ($lista->cantidad / 10); #sacamos ( (gananciatotal) / (numero de shot's) * shot's comprados)
                         $ing->save(); 
                         //validar si queda poca cantidad
                     }
                     $receta = Recetas::find($id);
-                    $fecha = date_create();
+                    //$fecha = date_create();
+                    $fecha = Carbon::now();
                     $venta = new Ventas;
                     $venta->idReceta = $id;
                     $venta->precio = $receta->precio;
                     $venta->ganancia = $ganancia;
-                    $venta->fecha = date('d/m/Y');
-                    $venta->hora = date_format($fecha, 'H:i:s');
+                    $venta->fecha = $fecha->format('d-m-Y');
+                    $venta->hora = $fecha->format('H:i:s');
                     $venta->save();
                 break;
                 }

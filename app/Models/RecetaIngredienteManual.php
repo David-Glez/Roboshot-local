@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RecetaIngrediente extends Model
+class RecetaIngredienteManual extends Model
 {
-    protected $table = 'recetaIngrediente';
+    protected $table = 'recetaIngredienteManual';
     public $incrementing = false;
     protected $fillable = [
-        'idReceta', 'idIngrediente', 'cantidad',
+        'codPedido', 'idIngrediente', 'cantidad'
     ];
 }
