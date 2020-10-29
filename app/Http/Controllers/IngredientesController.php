@@ -31,6 +31,8 @@ class IngredientesController extends Controller
             $nuevoIngrediente->cantidadTotal = $request->cantidad;
             $nuevoIngrediente->cantidadDisponible = $request->cantidad;
             $nuevoIngrediente->posicion = $request->posicion;
+            $nuevoIngrediente->precioCompra = $request->precioCompra;
+            $nuevoIngrediente->precioVenta = $request->precioVenta;
             $nuevoIngrediente->save();
 
             $ingrediente = array(
