@@ -22,8 +22,8 @@ class CreateIngredientesTable extends Migration
             $table->integer('cantidadDisponible'); //cantidad disponible de la botella
             $table->integer('posicion');
             $table->float('precioCompra', 4,2);
-            $table->float('precioVenta', 4, 2);
-            //$table->foreign('idCategoria')->references('idCategoria')->on('categorias');
+            $table->float('precioVenta', 4,2);
+            $table->foreign('idCategoria')->references('idCategoria')->on('categorias');
             $table->timestamps();
         });
     }
