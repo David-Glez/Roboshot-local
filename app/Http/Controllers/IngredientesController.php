@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+
 use App\Models\Ingredientes;
 use App\Models\RecetaIngrediente;
+use App\Models\Ventas;
+use App\Models\Recetas;
+use App\Models\RecetaIngredienteManual;
 
 class IngredientesController extends Controller
 {
@@ -23,7 +28,8 @@ class IngredientesController extends Controller
             $nuevoIngrediente->idCategoria = $request->categoria;
             $nuevoIngrediente->marca = $request->marca;
             $nuevoIngrediente->precio = $request->precio;
-            $nuevoIngrediente->cantidad = $request->cantidad;
+            $nuevoIngrediente->cantidadTotal = $request->cantidad;
+            $nuevoIngrediente->cantidadDisponible = $request->cantidad;
             $nuevoIngrediente->posicion = $request->posicion;
             $nuevoIngrediente->save();
 
@@ -64,10 +70,77 @@ class IngredientesController extends Controller
 
         return response()->json($respuesta);
     }
-    /***** Muestra los ingredientes registrados por Categoria*****/
+
+    // muestra ingrediente por categoria 
     public function ingredienteCategoria($Categoria){
         $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->get();
 
         return response()->json($ingredientes);
     }
+
+    // funcion para descontar ingredientes al solicitar receta
+    public function descuentaIngredientes(Request $request){
+
+        //en el caso de que la receta a descontar sea personalizada
+        if($request->personalizado == true){
+            //decodifica la lista de ingredientes
+            $array = json_decode($request->ingredientes);
+            $ganancia = 0;
+
+            // se recorre el arreglo de ingredientes
+            foreach($array as $key => $val){
+                if($val != 0){
+                    $descuento = 0;
+                    $ing = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
+                    $descuento = $ing->cantidadDisponible - $val; #se decrementa la cantidad disponible
+                    $ing->cantidadDisponible = $descuento; #se asigna nueva cantidad disponible
+                    $shot = $val/10; #numero de shots
+                    $ganancia += ( ($ing->precioVenta - $ing->precioCompra) / ($ing->precioVenta / $ing->precio) ) * $shot  ; #sacamos ( (gananciatotal) / (numero de shot's) * shot's comprados)
+                    $ing->save(); #se guardan cambios en la tabla
+                }
+            }
+
+            // se crea el registro de la venta
+            //$fecha = date_create();
+            $fecha = Carbon::now();
+
+            $venta = new Ventas;
+            $venta->idReceta = 1;
+            $venta->precio = $request->total;
+            $venta->ganancia = $ganancia;
+            $venta->fecha = $fecha->format('d-m-Y');
+            $venta->hora = $fecha->format('H:i:s');
+            $venta->save();
+        }else{
+
+            for($i=0; $i<count($request->bebidas); $i++){
+                foreach( $request->bebidas[$i] as $key => $val) {
+                    $id = $val; //id de receta
+                    $listaIngredientes = RecetaIngrediente::where('idReceta','=',$id)->select('idIngrediente','cantidad')->get();
+                    $ganancia = 0;
+                    foreach($listaIngredientes as $lista){
+                        $descuento = 0;
+                        $ing = Ingredientes::find($lista->idIngrediente);
+                        $descuento = $ing->cantidadDisponible - $lista->cantidad;
+                        $ing->cantidadDisponible = $descuento;
+                        $ganancia += ( ($ing->precioVenta - $ing->precioCompra) / ($ing->precioVenta / $ing->precio) )* ($lista->cantidad / 10); #sacamos ( (gananciatotal) / (numero de shot's) * shot's comprados)
+                        $ing->save(); 
+                        //validar si queda poca cantidad
+                    }
+                    $receta = Recetas::find($id);
+                    //$fecha = date_create();
+                    $fecha = Carbon::now();
+                    $venta = new Ventas;
+                    $venta->idReceta = $id;
+                    $venta->precio = $receta->precio;
+                    $venta->ganancia = $ganancia;
+                    $venta->fecha = $fecha->format('d-m-Y');
+                    $venta->hora = $fecha->format('H:i:s');
+                    $venta->save();
+                break;
+                }
+            }
+        }
+    }
+
 }

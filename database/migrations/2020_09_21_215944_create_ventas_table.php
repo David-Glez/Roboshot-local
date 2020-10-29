@@ -17,9 +17,10 @@ class CreateVentasTable extends Migration
             $table->bigIncrements('idVenta')->unique();
             $table->integer('idReceta');
             $table->float('precio');
+            $table->float('ganancia');
             $table->date('fecha');
             $table->time('hora');
-            $table->foreign('idReceta')->references('idReceta')->on('recetas');
+            //$table->foreign('idReceta')->references('idReceta')->on('recetas');
             $table->timestamps();
         });*/
 

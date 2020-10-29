@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Recetas;
 use App\Models\Ventas;
 use App\Models\Venta;
 
 
 class VentasController extends Controller
 {
-    /**Muestra todas las ventas registradas */
+    ///**Muestra todas las ventas registradas */
     public function index(){
         $ventas = Ventas::join('recetas','ventas.idReceta','recetas.idReceta')->select('ventas.*','recetas.nombre')->get();
         #$sum = Ventas::join('recetas','ventas.idReceta','recetas.idReceta')->sum('recetas.precio');
