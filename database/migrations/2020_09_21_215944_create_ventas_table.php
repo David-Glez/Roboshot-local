@@ -13,7 +13,7 @@ class CreateVentasTable extends Migration
      */
     public function up()
     {
-        Schema::create('ventas', function (Blueprint $table) {
+        /*Schema::create('ventas', function (Blueprint $table) {
             $table->bigIncrements('idVenta')->unique();
             $table->integer('idReceta');
             $table->float('precio');
@@ -21,6 +21,14 @@ class CreateVentasTable extends Migration
             $table->time('hora');
             $table->foreign('idReceta')->references('idReceta')->on('recetas');
             $table->timestamps();
+        });*/
+
+        Schema::create('ventas', function (Blueprint $table) {
+            $table->id();
+            $table->float('total');
+            $table->float('ganancia');
+            $table->boolean('online');
+            $table->timestampTz('fecha', 0);
         });
     }
 

@@ -41,3 +41,4 @@ Route::post('/categorias/nuevo', 'CategoriasController@anadirCategoria');
 
 //rutas para ventas
 Route::get('/ventas', 'VentasController@index');
+Route::post('/ventas', 'VentasController@store');

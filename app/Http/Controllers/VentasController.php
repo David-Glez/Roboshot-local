@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Recetas;
 use App\Models\Ventas;
+use App\Models\Venta;
+
 
 class VentasController extends Controller
 {
@@ -18,5 +20,15 @@ class VentasController extends Controller
             "total" => $sum
         );
         return response()->json($data);
+    }
+
+    public function store(Request $request)
+    {
+        $venta = new Venta;
+        $venta->total = $request->total;
+        $venta->ganancia = $request->ganancia;
+        $venta->fecha = $request->fecha;
+        $venta->online = $request->online;
+        $venta->save();
     }
 }
