@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ingredientes;
 use Illuminate\Http\Request;
 use App\Models\Recetas;
 use App\Models\RecetaIngrediente;
@@ -16,8 +17,22 @@ class RecetasController extends Controller
         $card = [];
 
         foreach($recetas as $val){
+            $list = [];
             $ingredientes = RecetaIngrediente::where('idReceta','=',$val->idReceta)->join('ingredientes', 'ingredientes.idIngrediente','=','recetaIngrediente.idIngrediente')->select('ingredientes.marca')->get();
             $cadena="";
+            $idIngr = RecetaIngrediente::where('idReceta', $val->idReceta)->get();
+            
+            foreach($idIngr as $i){
+                $pos = Ingredientes::find($i->idIngrediente);
+                $dato = array(
+                    "idIngrediente" => $pos->idIngrediente,
+                    "marca" => $pos->marca, 
+                    "posicion" => $pos->posicion,
+                    "cantidad" => $i->cantidad
+                );
+                $list[] = $dato;
+            }
+
             foreach($ingredientes as $i){
                 $cadena .= $i->marca.', '; 
             }
@@ -27,7 +42,8 @@ class RecetasController extends Controller
                 "descripcion" => $val->descripcion,
                 "precio"   => $val->precio,
                 "imagen"   => $val->img,
-                "ingredientes" => $cadena
+                "ingredientes" => $cadena,
+                "idIngr" => $list
             );
             $card[] = $data;
         }
@@ -57,6 +73,8 @@ class RecetasController extends Controller
 
         $id = $receta->idReceta;
         $p = 0;
+
+        $list = [];
         //$array = $request->ingredientes;
         foreach($array as $key => $val) {
             if($val != 0){
@@ -66,6 +84,15 @@ class RecetasController extends Controller
                 $ingre->idIngrediente = intval($key);
                 $ingre->cantidad = intval($val);
                 $ingre->save();
+
+                $pos = Ingredientes::find(intval($key));
+                $dato = array(
+                    "idIngrediente" => $pos->idIngrediente,
+                    "marca" => $pos->marca, 
+                    "posicion" => $pos->posicion,
+                    "cantidad" => intval($val)
+                );
+                $list[] = $dato;
             }
         }
 
@@ -73,7 +100,8 @@ class RecetasController extends Controller
 
         $data = array(
             "ingredientes" => $ingredientes,
-            "receta" => $id
+            "receta" => $id,
+            "idIng" => $list
         );
 
         return response()->json($data);
