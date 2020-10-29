@@ -81,6 +81,8 @@ class IngredientesController extends Controller
     // funcion para descontar ingredientes al solicitar receta
     public function descuentaIngredientes(Request $request){
 
+        $contador = 0;
+        $porcentaje = 0;
         //en el caso de que la receta a descontar sea personalizada
         if($request->personalizado == true){
             //decodifica la lista de ingredientes
@@ -96,6 +98,10 @@ class IngredientesController extends Controller
                     $ing->cantidadDisponible = $descuento; #se asigna nueva cantidad disponible
                     $shot = $val/10; #numero de shots
                     $ganancia += ( ($ing->precioVenta - $ing->precioCompra) / ($ing->precioVenta / $ing->precio) ) * $shot  ; #sacamos ( (gananciatotal) / (numero de shot's) * shot's comprados)
+                    $porcentaje = ($descuento * 100) / $ing->cantidadTotal;
+                    if($porcentaje < 50){
+                        $contador++;
+                    }
                     $ing->save(); #se guardan cambios en la tabla
                 }
             }
@@ -115,7 +121,7 @@ class IngredientesController extends Controller
             $idVenta = $venta->idVenta;
 
             // insertar ingredientes vendidos de acuerdo al id de venta
-            foreach($array as $key => $val){
+            /*foreach($array as $key => $val){
                 if($val != 0){
                     $ingManual = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
                     $recetaManual = new recetaIngredienteManual;
@@ -124,7 +130,7 @@ class IngredientesController extends Controller
                     $recetaManual->cantidad = $val;
                     $recetaManual->save();
                 }
-            }
+            }*/
         }else{
 
             for($i=0; $i<count($request->bebidas); $i++){
@@ -138,8 +144,13 @@ class IngredientesController extends Controller
                         $descuento = $ing->cantidadDisponible - $lista->cantidad;
                         $ing->cantidadDisponible = $descuento;
                         $ganancia += ( ($ing->precioVenta - $ing->precioCompra) / ($ing->precioVenta / $ing->precio) )* ($lista->cantidad / 10); #sacamos ( (gananciatotal) / (numero de shot's) * shot's comprados)
+                        //verificar si queda liquido disponible
+                        $porcentaje = ($descuento * 100) / $ing->cantidadTotal;
+                        if($porcentaje < 50){
+                            $contador++;
+                        }
                         $ing->save(); 
-                        //validar si queda poca cantidad
+                        
                     }
                     $receta = Recetas::find($id);
                     //$fecha = date_create();
@@ -155,11 +166,7 @@ class IngredientesController extends Controller
                 }
             }
         }
-        
 
-        $msj = array(
-            "mensaje" => "Se descontaron los ingredientes"
-        );
-        return response()->json($msj);
+        return response()->json($contador);
     }
 }
