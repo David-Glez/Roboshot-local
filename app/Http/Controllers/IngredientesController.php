@@ -34,9 +34,11 @@ class IngredientesController extends Controller
             $nuevoIngrediente->precioCompra = $request->precioCompra;
             $nuevoIngrediente->precioVenta = $request->precioVenta;
             $nuevoIngrediente->save();
+            $id = $nuevoIngrediente->idIngrediente;
 
             $ingrediente = array(
                 'nuevo' => true,
+                'id' => $id,
                 'posicion' => $request->posicion
             );
         }else{

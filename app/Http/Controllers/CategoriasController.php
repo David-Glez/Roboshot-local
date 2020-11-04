@@ -12,5 +12,18 @@ class CategoriasController extends Controller
         return response()->json($categorias);
     }
 
+    public function anadirCategoria(Request $request){
+        $categoria =  new Categorias;
+        $categoria->nombre = $request->nombre;
+        $categoria->save();
+
+        $datos = array(
+            'idCategoria' => $categoria->idCategoria,
+            'nombre' => $categoria->nombre
+        );
+
+        return response()->json($datos);
+    }
+
     
 }
