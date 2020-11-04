@@ -11,4 +11,6 @@ class CategoriasController extends Controller
         $categorias = Categorias::all();
         return response()->json($categorias);
     }
+
+    
 }
