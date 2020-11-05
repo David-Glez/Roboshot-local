@@ -34,9 +34,11 @@ class IngredientesController extends Controller
             $nuevoIngrediente->precioCompra = $request->precioCompra;
             $nuevoIngrediente->precioVenta = $request->precioVenta;
             $nuevoIngrediente->save();
+            $id = $nuevoIngrediente->idIngrediente;
 
             $ingrediente = array(
                 'nuevo' => true,
+                'id' => $id,
                 'posicion' => $request->posicion
             );
         }else{
@@ -110,7 +112,7 @@ class IngredientesController extends Controller
 
             // se crea el registro de la venta
             //$fecha = date_create();
-            $fecha = Carbon::now();
+            /*$fecha = Carbon::now();
 
             $venta = new Ventas;
             $venta->idReceta = 1;
@@ -154,7 +156,7 @@ class IngredientesController extends Controller
                         $ing->save(); 
                         
                     }
-                    $receta = Recetas::find($id);
+                    /*$receta = Recetas::find($id);
                     //$fecha = date_create();
                     $fecha = Carbon::now();
                     $venta = new Ventas;
@@ -163,7 +165,7 @@ class IngredientesController extends Controller
                     $venta->ganancia = $ganancia;
                     $venta->fecha = $fecha->format('d-m-Y');
                     $venta->hora = $fecha->format('H:i:s');
-                    $venta->save();
+                    $venta->save();*/
                 break;
                 }
             }

@@ -19,11 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoriaSeeder::class);
         $this->call(IngredientesSeeder::class);
         $this->call(RecetaSeeder::class);
-<<<<<<< HEAD
         $this->call(VentasSeeder::class);
         //$this->call(RecetaIngredienteSeeder::class);
-=======
->>>>>>> 6e56a680f82c7fe0ce9829f2a8774b54495e0950
 
     }
 }
