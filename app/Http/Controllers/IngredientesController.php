@@ -85,6 +85,7 @@ class IngredientesController extends Controller
 
         $contador = 0;
         $porcentaje = 0;
+        $ingredientes = [];
         //en el caso de que la receta a descontar sea personalizada
         if($request->personalizado == true){
             //decodifica la lista de ingredientes
@@ -105,12 +106,18 @@ class IngredientesController extends Controller
                         $contador++;
                     }
                     $ing->save(); #se guardan cambios en la tabla
+
+                    $data = array(
+                        'posicion' => $key,
+                        'cantidad' => $val
+                    );
+                    $ingredientes[] = $data;
                 }
             }
 
             // se crea el registro de la venta
             //$fecha = date_create();
-            $fecha = Carbon::now();
+            /*$fecha = Carbon::now();
 
             $venta = new Ventas;
             $venta->idReceta = 1;
@@ -120,6 +127,7 @@ class IngredientesController extends Controller
             $venta->hora = $fecha->format('H:i:s');
             $venta->save();
 
+            $ingredientes[] = $array;
             $idVenta = $venta->idVenta;
 
             // insertar ingredientes vendidos de acuerdo al id de venta
@@ -139,6 +147,7 @@ class IngredientesController extends Controller
                 foreach( $request->bebidas[$i] as $key => $val) {
                     $id = $val; //id de receta
                     $listaIngredientes = RecetaIngrediente::where('idReceta','=',$id)->select('idIngrediente','cantidad')->get();
+                   // $ingredientes[] = $listaIngredientes;
                     $ganancia = 0;
                     foreach($listaIngredientes as $lista){
                         $descuento = 0;
@@ -152,23 +161,32 @@ class IngredientesController extends Controller
                             $contador++;
                         }
                         $ing->save(); 
-                        
+
+                        $data = array(
+                            'posicion' => $ing->posicion,
+                            'cantidad' => $lista->cantidad
+                        );
+                        $ingredientes[] = $data;
                     }
                     $receta = Recetas::find($id);
                     //$fecha = date_create();
-                    $fecha = Carbon::now();
+                    /*$fecha = Carbon::now();
                     $venta = new Ventas;
                     $venta->idReceta = $id;
                     $venta->precio = $receta->precio;
                     $venta->ganancia = $ganancia;
                     $venta->fecha = $fecha->format('d-m-Y');
                     $venta->hora = $fecha->format('H:i:s');
-                    $venta->save();
+                    $venta->save();*/
                 break;
                 }
             }
         }
 
-        return response()->json($contador);
+        $data = array(
+            'contador' => $contador,
+            'lista' => $ingredientes
+        );
+        return response()->json($data);
     }
 }
