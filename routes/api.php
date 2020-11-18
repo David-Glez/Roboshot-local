@@ -26,6 +26,7 @@ Route::post('/logout', 'InicioController@cerrarSesion');
 Route::get('/recetas', 'RecetasController@inicio');
 Route::post('/recetas/nuevo', 'RecetasController@anadirReceta');
 Route::get('/recetas/busca/{idReceta}', 'RecetasController@buscaReceta');
+Route::get('/recetas/eliminar/{idReceta}', 'RecetasController@eliminarReceta');
 
 //rutas para ingredientes
 Route::get('/ingredientes', 'IngredientesController@inicio');
