@@ -25,7 +25,7 @@ class VentasController extends Controller
     {
         $venta = new Venta;
         $venta->total = $request->total;
-        $venta->ganancia = $request->ganancia;
+        $venta->ganancia = 0;//$request->ganancia; se calcula en la funcion de descuenta ingrediente
         $venta->fecha = $request->fecha;
         $venta->online = $request->online;
         $venta->save();

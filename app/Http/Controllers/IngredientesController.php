@@ -7,9 +7,11 @@ use Illuminate\Support\Carbon;
 
 use App\Models\Ingredientes;
 use App\Models\RecetaIngrediente;
-use App\Models\Ventas;
+use App\Models\Venta;
 use App\Models\Recetas;
 use App\Models\RecetaIngredienteManual;
+use App\Models\IngredienteVendido;
+use App\Models\Categorias;
 
 class IngredientesController extends Controller
 {
@@ -82,6 +84,37 @@ class IngredientesController extends Controller
         return response()->json($ingredientes);
     }
 
+    // crea un registro en la tabla de un ingrediente vendido, con el id de la venta y los datos del ingrediente
+    // tambien calcula la ganancia de la venta
+    public function creaRegistroIngredienteVendido($idVenta, $ing_data, $cantidad)
+    {
+        $venta = Venta::find($idVenta);
+
+        $ing_vendido = new IngredienteVendido;
+        
+        $ing_vendido->idVenta = $idVenta;
+
+        $ing_vendido->idIngrediente = $ing_data->idIngrediente;
+        $ing_vendido->precioCompra = $ing_data->precioCompra;
+        $ing_vendido->precioVenta = $ing_data->precioVenta;
+        $ing_vendido->cantidad = $cantidad;
+        $ing_vendido->fecha = $venta->fecha;
+
+        $categoria = Categorias::find($ing_data->idCategoria)->nombre;
+
+        $ing_vendido->nombre = "[" . $categoria . "] " . $ing_data->marca;
+
+        $ing_vendido->save();
+
+
+        // calcular la ganancia de la venta. una venta nueva tiene su ganancia en 0
+        // la cantidad esta en ml y precioCompra/precioVenta en L
+
+        $venta->ganancia += ($ing_vendido->precioVenta - $ing_vendido->precioCompra) / 1000.0 * $ing_vendido->cantidad;
+
+        $venta->save();
+    }
+
     // funcion para descontar ingredientes al solicitar receta
     public function descuentaIngredientes(Request $request){
 
@@ -107,6 +140,8 @@ class IngredientesController extends Controller
                         $contador++;
                     }
                     $ing->save(); #se guardan cambios en la tabla
+
+                    //$this->creaRegistroIngredienteVendido($request->folio, $ing, $val); // val = cantidad descontada del shot???
                 }
             }
 
@@ -155,6 +190,7 @@ class IngredientesController extends Controller
                         }
                         $ing->save(); 
                         
+                        $this->creaRegistroIngredienteVendido($request->folio, $ing, $lista->cantidad);
                     }
                     /*$receta = Recetas::find($id);
                     //$fecha = date_create();
