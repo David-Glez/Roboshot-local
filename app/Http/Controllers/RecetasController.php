@@ -107,4 +107,9 @@ class RecetasController extends Controller
         return response()->json($data);
     }
 
+    public function eliminarReceta($idReceta){
+        $eliminar = Recetas::where('idReceta',$idReceta)->delete();
+
+        return response()->json($eliminar);
+    }
 }
