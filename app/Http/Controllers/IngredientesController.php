@@ -79,7 +79,7 @@ class IngredientesController extends Controller
 
     // muestra ingrediente por categoria 
     public function ingredienteCategoria($Categoria){
-        $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->get();
+        $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->where('idIngrediente','!=', 10)->where('idIngrediente','!=', 11)->get();
 
         return response()->json($ingredientes);
     }
@@ -121,10 +121,48 @@ class IngredientesController extends Controller
         $contador = 0;
         $porcentaje = 0;
         $ingredientes = [];
+        $color = '';
+        $inactivas = [];
+
+        for($i = 0; $i < count($request->bebidas); $i++){
+            foreach($request->bebidas[$i]["ingredientes"] as $key => $val){
+                $descuento = 0;
+                $ing = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
+                $descuento = $ing->cantidadDisponible - $val; #se decrementa la cantidad disponible
+                $ing->cantidadDisponible = $descuento; #se asigna nueva cantidad disponible
+                $porcentaje = ($descuento * 100) / $ing->cantidadTotal; #se saca el porcentaje para ver que ingredientes se estan agotando
+                #verificamos en que nivel se encuentra el ingrediente
+                if($porcentaje >= 20 && $porcentaje <= 30){
+                    $contador++;
+                    $color = 'yellow';
+                } elseif($porcentaje >= 7 && $porcentaje < 20) {
+                    $contador++;
+                    $color = 'red';
+                } elseif($porcentaje < 7){ #limite para desactivar las recetas 
+                    $color = 'black';
+                    $contador++;
+                    $recetas = Recetas::join('recetaIngrediente','recetas.idReceta','recetaIngrediente.idReceta')->where('recetaIngrediente.idIngrediente',$ing->idIngrediente)->where('recetas.activa',true)->select('recetas.idReceta','recetas.activa')->get();
+                    foreach($recetas as $r){
+                        $inactivas[] = $r->idReceta;
+                        $r->activa = false;
+                        $r->save();
+                    }
+                }
+                $ing->save(); #se guardan cambios en la tabla
+                
+                $data = array(
+                    'posicion' => $key,
+                    'cantidad' => $val
+                );
+                $ingredientes[] = $data;
+                
+            }
+        }
+
         //en el caso de que la receta a descontar sea personalizada
-        if($request->personalizado == true){
+        /*if($request->personalizado == true){
             //decodifica la lista de ingredientes
-            $array = json_decode($request->ingredientes);
+            $array = json_decode($request->bebidas);
             $ganancia = 0;
 
             // se recorre el arreglo de ingredientes
@@ -176,7 +214,7 @@ class IngredientesController extends Controller
                     $recetaManual->cantidad = $val;
                     $recetaManual->save();
                 }
-            }*/
+            }
         }else{
 
             for($i=0; $i<count($request->bebidas); $i++){
@@ -215,14 +253,16 @@ class IngredientesController extends Controller
                     $venta->ganancia = $ganancia;
                     $venta->fecha = $fecha->format('d-m-Y');
                     $venta->hora = $fecha->format('H:i:s');
-                    $venta->save();*/
+                    $venta->save();
                 break;
                 }
             }
-        }
+        }*/
 
         $data = array(
             'contador' => $contador,
+            'color' => $color,
+            'inactivas' => $inactivas,
             'lista' => $ingredientes
         );
         return response()->json($data);

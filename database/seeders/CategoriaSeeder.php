@@ -43,5 +43,9 @@ class CategoriaSeeder extends Seeder
         DB::table('categorias')->insert([
             'nombre' => 'Licores'
         ]);
+        #7
+        DB::table('categorias')->insert([
+            'nombre' => 'Solidos'
+        ]);
     }
 }

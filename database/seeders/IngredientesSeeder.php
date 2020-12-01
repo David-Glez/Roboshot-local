@@ -91,15 +91,47 @@ class IngredientesSeeder extends Seeder
             'precioVenta' => 3000
         ]);
 
-        /*DB::table('ingredientes')->insert([
-            'idCategoria' => 0,
+        DB::table('ingredientes')->insert([
+            'idCategoria' => 7,
             'marca' => 'Sal',
-            'precio' => 1,
-            'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 19
+            'precio' => 1.00,
+            'cantidadTotal' => 1000,
+            'cantidadDisponible' => 1000,
+            'posicion' => 8,
+            'precioCompra' => 70,
+            'precioVenta' => 150
         ]);
-
+        DB::table('ingredientes')->insert([
+            'idCategoria' => 7,
+            'marca' => 'Chile en Polvo',
+            'precio' => 1.00,
+            'cantidadTotal' => 1000,
+            'cantidadDisponible' => 1000,
+            'posicion' => 9,
+            'precioCompra' => 70,
+            'precioVenta' => 150
+        ]);
+        DB::table('ingredientes')->insert([
+            'idCategoria' => 7,
+            'marca' => 'Mezclador',
+            'precio' => 0.00,
+            'cantidadTotal' => 0,
+            'cantidadDisponible' => 0,
+            'posicion' => 10,
+            'precioCompra' => 0,
+            'precioVenta' => 0
+        ]);
+        DB::table('ingredientes')->insert([
+            'idCategoria' => 7,
+            'marca' => 'Hielo',
+            'precio' => 0.00,
+            'cantidadTotal' => 1000,
+            'cantidadDisponible' => 1000,
+            'posicion' => 11,
+            'precioCompra' => 0,
+            'precioVenta' => 0
+        ]);
+        /*
         DB::table('ingredientes')->insert([
             'idCategoria' => 0,
             'marca' => 'Hielo',

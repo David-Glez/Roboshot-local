@@ -13,7 +13,7 @@ class RecetasController extends Controller
     //trae las recetas de la base de datos
     public function inicio(){
 
-        $recetas = Recetas::where('activa', '=', true)->get();
+        $recetas = Recetas::where('idReceta', '>', 1)->get();
         $card = [];
 
         foreach($recetas as $val){
@@ -43,7 +43,8 @@ class RecetasController extends Controller
                 "precio"   => $val->precio,
                 "imagen"   => $val->img,
                 "ingredientes" => $cadena,
-                "idIngr" => $list
+                "idIngr" => $list,
+                "activa" => $val->activa
             );
             $card[] = $data;
         }
