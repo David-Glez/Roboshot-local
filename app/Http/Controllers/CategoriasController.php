@@ -12,6 +12,7 @@ class CategoriasController extends Controller
         return response()->json($categorias);
     }
 
+<<<<<<< HEAD
     public function anadirCategoria(Request $request){
         $categoria =  new Categorias;
         $categoria->nombre = $request->nombre;
@@ -25,5 +26,7 @@ class CategoriasController extends Controller
         return response()->json($datos);
     }
 
+=======
+>>>>>>> 0ae6510a6f6006e074868183caed7b5fae2f9298
     
 }
