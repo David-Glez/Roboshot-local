@@ -149,13 +149,10 @@ class IngredientesController extends Controller
                     }
                 }
                 $ing->save(); #se guardan cambios en la tabla
-                
-                $data = array(
-                    'posicion' => $key,
-                    'cantidad' => $val
-                );
-                $ingredientes[] = $data;
-                
+
+                // Crea registro ingrediente vendido
+                // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
+                $this->creaRegistroIngredienteVendido($request->folio, $ing, $val);
             }
         }
 
