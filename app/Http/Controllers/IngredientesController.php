@@ -152,7 +152,7 @@ class IngredientesController extends Controller
 
                 // Crea registro ingrediente vendido
                 // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
-                $this->creaRegistroIngredienteVendido($request->folio, $ing, $val);
+                $this->creaRegistroIngredienteVendido($request->numOrden, $ing, $val);
             }
         }
 
