@@ -16,9 +16,7 @@ class CreateBebidasVendidasTable extends Migration
         Schema::create('bebidasVendidas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idVenta');
-            $table->enum('tipo', ['receta', 'personalizada']);
-            $table->string('nombre', 255)->nullable();
-            $table->integer('cantidad');
+            $table->string('nombre', 255);
         });
     }
 

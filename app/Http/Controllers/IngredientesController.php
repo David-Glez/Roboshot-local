@@ -11,6 +11,7 @@ use App\Models\Venta;
 use App\Models\Recetas;
 use App\Models\RecetaIngredienteManual;
 use App\Models\IngredienteVendido;
+use App\Models\BebidaVendida;
 use App\Models\Categorias;
 
 class IngredientesController extends Controller
@@ -115,6 +116,16 @@ class IngredientesController extends Controller
         $venta->save();
     }
 
+    public function creaRegistroBebidaVendida($idVenta, $nombreBebida)
+    {
+        $bebida_vendida = new BebidaVendida;
+
+        $bebida_vendida->idVenta = $idVenta;
+        $bebida_vendida->nombre = $nombreBebida;
+
+        $bebida_vendida->save();
+    }
+
     // funcion para descontar ingredientes al solicitar receta
     public function descuentaIngredientes(Request $request){
 
@@ -154,6 +165,7 @@ class IngredientesController extends Controller
                 // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
                 $this->creaRegistroIngredienteVendido($request->numOrden, $ing, $val);
             }
+            $this->creaRegistroBebidaVendida($request->numOrden, $request->bebidas[$i]->nombre);
         }
 
         //en el caso de que la receta a descontar sea personalizada
