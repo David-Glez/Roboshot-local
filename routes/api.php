@@ -38,6 +38,7 @@ Route::post('/ingredientes/descuenta', 'IngredientesController@descuentaIngredie
 //rutas para categorias
 Route::get('/categorias', 'CategoriasController@inicio');
 Route::post('/categorias/nuevo', 'CategoriasController@anadirCategoria');
+Route::post('/categorias/actualizar', 'CategoriasController@actualizarCategoria');
  
 
 //rutas para ventas
