@@ -25,5 +25,11 @@ class CategoriasController extends Controller
         return response()->json($datos);
     }
 
+    public function actualizarCategoria(Request $request){
+        Categorias::find($request->id)->update(['nombre' => $request->nombre]);
+        
+        return response()->json(true);
+    }
+
     
 }
