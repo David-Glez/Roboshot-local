@@ -111,7 +111,7 @@ class IngredientesSeeder extends Seeder
             'precioCompra' => 70,
             'precioVenta' => 150
         ]);
-        DB::table('ingredientes')->insert([
+        /*DB::table('ingredientes')->insert([
             'idCategoria' => 7,
             'marca' => 'Mezclador',
             'precio' => 0.00,
@@ -120,7 +120,7 @@ class IngredientesSeeder extends Seeder
             'posicion' => 10,
             'precioCompra' => 0,
             'precioVenta' => 0
-        ]);
+        ]);*/
         DB::table('ingredientes')->insert([
             'idCategoria' => 7,
             'marca' => 'Hielo',

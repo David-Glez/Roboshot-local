@@ -99,6 +99,7 @@ class IngredientesController extends Controller
         $ing_vendido->precioCompra = $ing_data->precioCompra;
         $ing_vendido->precioVenta = $ing_data->precioVenta;
         $ing_vendido->cantidad = $cantidad;
+
         $ing_vendido->fecha = $venta->fecha;
 
         $categoria = Categorias::find($ing_data->idCategoria)->nombre;
@@ -141,7 +142,10 @@ class IngredientesController extends Controller
                 $ing = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
                 $descuento = $ing->cantidadDisponible - $val; #se decrementa la cantidad disponible
                 $ing->cantidadDisponible = $descuento; #se asigna nueva cantidad disponible
-                $porcentaje = ($descuento * 100) / $ing->cantidadTotal; #se saca el porcentaje para ver que ingredientes se estan agotando
+                if($ing->cantidadTotal <= 0)
+                    $porcentaje = 0;
+                else
+                    $porcentaje = ($descuento * 100) / $ing->cantidadTotal; #se saca el porcentaje para ver que ingredientes se estan agotando
                 #verificamos en que nivel se encuentra el ingrediente
                 if($porcentaje >= 20 && $porcentaje <= 30){
                     $contador++;
