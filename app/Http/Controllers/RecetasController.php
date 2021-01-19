@@ -36,6 +36,7 @@ class RecetasController extends Controller
             foreach($ingredientes as $i){
                 $cadena .= $i->marca.', '; 
             }
+            $cadena = trim($cadena, ', ');
             $data = array(
                 "idReceta" => $val->idReceta,
                 "nombre"   => $val->nombre,
