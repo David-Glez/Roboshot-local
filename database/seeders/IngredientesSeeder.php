@@ -111,7 +111,7 @@ class IngredientesSeeder extends Seeder
             'precioCompra' => 70,
             'precioVenta' => 150
         ]);
-        DB::table('ingredientes')->insert([
+        /*DB::table('ingredientes')->insert([
             'idCategoria' => 7,
             'marca' => 'Mezclador',
             'precio' => 0.00,
@@ -120,6 +120,16 @@ class IngredientesSeeder extends Seeder
             'posicion' => 10,
             'precioCompra' => 0,
             'precioVenta' => 0
+        ]);*/
+        DB::table('ingredientes')->insert([
+            'idCategoria' => 5,
+            'marca' => 'Jugo de Toronja',
+            'precio' => 12.00,
+            'cantidadTotal' => 2000,
+            'cantidadDisponible' => 2000,
+            'posicion' => 6,
+            'precioCompra' => 70,
+            'precioVenta' => 2400
         ]);
         DB::table('ingredientes')->insert([
             'idCategoria' => 7,
