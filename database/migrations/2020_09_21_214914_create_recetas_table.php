@@ -20,7 +20,7 @@ class CreateRecetasTable extends Migration
             $table->float('precio', 4,2);
             $table->boolean('activa');
             $table->string('img')->nullable()->default('/img/camera.jpg');
-            $table->boolean('mezclar');
+            $table->boolean('mezclar')->default('false');
             $table->timestamps();
         });
     }

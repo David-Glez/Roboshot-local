@@ -44,7 +44,8 @@ class RecetasController extends Controller
                 "imagen"   => $val->img,
                 "ingredientes" => $cadena,
                 "idIngr" => $list,
-                "activa" => $val->activa
+                "activa" => $val->activa,
+                "mezclar" => $val->mezclar
             );
             $card[] = $data;
         }
@@ -60,7 +61,7 @@ class RecetasController extends Controller
             echo "<script>console.log( 'Debug Objects: " . $val . "' );</script>";
         }*/
        if($request->imagen == null){
-           $verificaIMG = '/images/camera.jpg';
+           $verificaIMG = '/img/camera.jpg';
        }else{
            $verificaIMG = $request->imagen;
        }
@@ -70,6 +71,7 @@ class RecetasController extends Controller
         $receta->descripcion = $request->descripcion;
         $receta->img = $verificaIMG;
         $receta->activa = true;
+        $receta->mezclar = $request->mezclar;
         $receta->save();
 
         $id = $receta->idReceta;
