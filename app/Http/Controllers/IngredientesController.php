@@ -18,7 +18,9 @@ class IngredientesController extends Controller
 {
     //Trae todos los ingredientes registrados en la base de datos
     public function inicio(){
-        $ingredientes = Ingredientes::all();
+        
+        //$ingredientes = Ingredientes:all();
+        $ingredientes = Ingredientes::with('ingPos')->get();
 
         return response()->json($ingredientes);
     }

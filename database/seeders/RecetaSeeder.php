@@ -19,7 +19,8 @@ class RecetaSeeder extends Seeder
 			'descripcion' => 'Bebida personalizada por el cliente',
             'precio' => 0.0,
             'activa' => false,
-            'img' => '/images/camera.jpg'
+            'img' => '/images/camera.jpg',
+            'mezclar' => false
         ]);
         /*DB::table('recetas')->insert([
         	'nombre' => 'Paloma',

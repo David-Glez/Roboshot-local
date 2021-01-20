@@ -19,8 +19,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Cazadores',
             'precio' => 25.00,
             'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 1,
+            //'cantidadDisponible' => 2000,
+            //'posicion' => 1,
             'precioCompra' => 600,
             'precioVenta' => 5000
         ]);
@@ -30,8 +30,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Smirnoff',
             'precio' => 35.00,
             'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 2,
+            //'cantidadDisponible' => 2000,
+            //'posicion' => 2,
             'precioCompra' => 700,
             'precioVenta' => 7000
         ]);
@@ -41,8 +41,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Controy',
             'precio' => 25.00,
             'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 3, 
+            //'cantidadDisponible' => 2000,
+            //'posicion' => 3, 
             'precioCompra' => 700,
             'precioVenta' => 5000
         ]);
@@ -52,8 +52,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Squirt',
             'precio' => 10.00,
             'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 4,
+            //'cantidadDisponible' => 2000,
+            //'posicion' => 4,
             'precioCompra' => 30,
             'precioVenta' => 2000
         ]);
@@ -63,8 +63,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Jarabe Natural',
             'precio' => 10.00,
             'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 5, 
+            //'cantidadDisponible' => 2000,
+            //'posicion' => 5, 
             'precioCompra' => 70,
             'precioVenta' => 2000
         ]);
@@ -74,8 +74,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Jugo de Arandano',
             'precio' => 12.00,
             'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 6,
+            //'cantidadDisponible' => 2000,
+            //'posicion' => 6,
             'precioCompra' => 70,
             'precioVenta' => 2400
         ]);
@@ -85,8 +85,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Jugo de Limón',
             'precio' => 15.00,
             'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 7,
+            //'cantidadDisponible' => 2000,
+            //'posicion' => 7,
             'precioCompra' => 70,
             'precioVenta' => 3000
         ]);
@@ -96,8 +96,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Sal',
             'precio' => 1.00,
             'cantidadTotal' => 1000,
-            'cantidadDisponible' => 1000,
-            'posicion' => 8,
+            //'cantidadDisponible' => 1000,
+            //'posicion' => 8,
             'precioCompra' => 70,
             'precioVenta' => 150
         ]);
@@ -106,8 +106,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Chile en Polvo',
             'precio' => 1.00,
             'cantidadTotal' => 1000,
-            'cantidadDisponible' => 1000,
-            'posicion' => 9,
+            //'cantidadDisponible' => 1000,
+            //'posicion' => 9,
             'precioCompra' => 70,
             'precioVenta' => 150
         ]);
@@ -126,8 +126,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Jugo de Toronja',
             'precio' => 12.00,
             'cantidadTotal' => 2000,
-            'cantidadDisponible' => 2000,
-            'posicion' => 6,
+            //'cantidadDisponible' => 2000,
+            //'posicion' => 6,
             'precioCompra' => 70,
             'precioVenta' => 2400
         ]);
@@ -136,8 +136,8 @@ class IngredientesSeeder extends Seeder
             'marca' => 'Hielo',
             'precio' => 0.00,
             'cantidadTotal' => 1000,
-            'cantidadDisponible' => 1000,
-            'posicion' => 11,
+            //'cantidadDisponible' => 1000,
+            //'posicion' => 11,
             'precioCompra' => 0,
             'precioVenta' => 0
         ]);
