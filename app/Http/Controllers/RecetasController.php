@@ -81,23 +81,22 @@ class RecetasController extends Controller
         $list = [];
         //$array = $request->ingredientes;
         foreach($array as $key => $val) {
-            if($val != 0){
-                
-                $ingre = new RecetaIngrediente;
-                $ingre->idReceta = $id;
-                $ingre->idIngrediente = intval($key);
-                $ingre->cantidad = intval($val);
-                $ingre->save();
+        
+            $ingre = new RecetaIngrediente;
+            $ingre->idReceta = $id;
+            $ingre->idIngrediente = intval($key);
+            $ingre->cantidad = intval($val);
+            $ingre->save();
 
-                $pos = Ingredientes::find(intval($key));
-                $dato = array(
-                    "idIngrediente" => $pos->idIngrediente,
-                    "marca" => $pos->marca, 
-                    "posicion" => $pos->posicion,
-                    "cantidad" => intval($val)
-                );
-                $list[] = $dato;
-            }
+            $pos = Ingredientes::find(intval($key));
+            $dato = array(
+                "idIngrediente" => $pos->idIngrediente,
+                "marca" => $pos->marca, 
+                "posicion" => $pos->posicion,
+                "cantidad" => intval($val)
+            );
+            $list[] = $dato;
+            
         }
 
         $ingredientes = RecetaIngrediente::where('idReceta','=',$id)->join('ingredientes', 'ingredientes.idIngrediente','=','recetaIngrediente.idIngrediente')->select('ingredientes.marca')->get();
