@@ -13,6 +13,8 @@ use App\Models\RecetaIngredienteManual;
 use App\Models\IngredienteVendido;
 use App\Models\BebidaVendida;
 use App\Models\Categorias;
+use App\Models\IngredientePosicion;
+use Illuminate\Database\Eloquent\Builder;
 
 class IngredientesController extends Controller
 {
@@ -82,7 +84,22 @@ class IngredientesController extends Controller
 
     // muestra ingrediente por categoria 
     public function ingredienteCategoria($Categoria){
-        $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->where('idIngrediente','!=', 10)->where('idIngrediente','!=', 11)->get();
+        //$ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->where('idIngrediente','!=', 10)->where('idIngrediente','!=', 11)->get();
+
+        $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->get();
+
+        /*$ingredientes = IngredientePosicion::whereHas('posIng', function($query) use($Categoria){
+            $query->where('idCategoria', '=', $Categoria);
+        })->get();
+
+        dd($ingredientes);*/
+
+        foreach($ingredientes as $ing)
+        {
+            //$cantidades = IngredientePosicion::where('idIngrediente', $ing->idIngrediente);
+
+            dd($cantidades = $ing->ingPos);
+        }
 
         return response()->json($ingredientes);
     }
