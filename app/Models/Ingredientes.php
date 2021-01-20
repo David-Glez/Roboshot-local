@@ -14,4 +14,8 @@ class Ingredientes extends Model
         'cantidadTotal', 'cantidadDisponible', 'posicion',
         'precioCompra', 'precioVenta'
     ];
+
+    public function ingPos(){
+        return $this->hasMany(IngredientePosicion::class, 'idIngrediente', 'idIngrediente');
+    }
 }
