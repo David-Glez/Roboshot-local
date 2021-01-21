@@ -88,19 +88,6 @@ class IngredientesController extends Controller
 
         $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->get();
 
-        /*$ingredientes = IngredientePosicion::whereHas('posIng', function($query) use($Categoria){
-            $query->where('idCategoria', '=', $Categoria);
-        })->get();
-
-        dd($ingredientes);*/
-
-        foreach($ingredientes as $ing)
-        {
-            //$cantidades = IngredientePosicion::where('idIngrediente', $ing->idIngrediente);
-
-            dd($cantidades = $ing->ingPos);
-        }
-
         return response()->json($ingredientes);
     }
 

@@ -18,4 +18,19 @@ class Ingredientes extends Model
     public function ingPos(){
         return $this->hasMany(IngredientePosicion::class, 'idIngrediente', 'idIngrediente');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::retrieved(function($model){
+            $ingPos_list = $model->ingPos;
+
+            $cantidad = 0;
+            foreach($ingPos_list as $ingPos)
+                $cantidad += $ingPos->cantidad;
+
+            $model->cantidad = $cantidad;
+        });
+    }   
 }
