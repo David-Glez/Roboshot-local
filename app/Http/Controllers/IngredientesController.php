@@ -56,6 +56,26 @@ class IngredientesController extends Controller
         return response()->json($data);
     }
 
+    //  elimina una posicion
+    public function deletePos(Request $request){
+
+        //  se elimina de la tabla
+        $pos = IngredientePosicion::where('posicion', $request->posicion)->delete();
+        if($pos){
+            $data = array(
+                'status' => true,
+                'mensaje' => 'Posición eliminada',
+            );
+        }else{
+            $data = array(
+                'status' => false,
+                'mensaje' => 'Falla al eliminar',
+            );
+        }
+        
+        return response()->json($data);
+    }
+
     //  Añade un nuevo ingrediente
     public function anadirIngrediente(Request $request){
         $busca = Ingredientes::where('posicion', $request->posicion)->count();
