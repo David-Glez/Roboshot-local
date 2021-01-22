@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ingredientes extends Model
 {
-    public $cantidad = 0;
-
     protected $table = 'ingredientes';
     protected $primaryKey = 'idIngrediente';
     protected $fillable = [
@@ -17,8 +15,17 @@ class Ingredientes extends Model
         'precioCompra', 'precioVenta'
     ];
 
+
     public function ingPos(){
         return $this->hasMany(IngredientePosicion::class, 'idIngrediente', 'idIngrediente');
+    }
+
+    public $cantidad;
+    protected $appends = ['cantidad'];
+
+    public function getCantidadAttribute()
+    {
+        return $this->cantidad;
     }
 
     protected static function boot()
