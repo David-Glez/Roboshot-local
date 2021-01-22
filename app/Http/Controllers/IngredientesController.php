@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 
 use App\Models\Ingredientes;
+use App\Models\IngredientePosicion;
 use App\Models\RecetaIngrediente;
 use App\Models\Venta;
 use App\Models\Recetas;
@@ -20,14 +20,65 @@ class IngredientesController extends Controller
 {
     //Trae todos los ingredientes registrados en la base de datos
     public function inicio(){
-        
+
         //$ingredientes = Ingredientes:all();
         $ingredientes = Ingredientes::with('ingPos')->get();
 
         return response()->json($ingredientes);
     }
 
-    //Añade un nuevo ingrediente
+    //  actualiza la posicion con el ingrediente enviado
+    public function updatePos(Request $request){
+        $id = $request->id;
+        $pos = $request->posicion;
+        $posicion = IngredientePosicion::where('idIngrediente',$id)->where('posicion', $pos)->first();
+        if($posicion){
+            $posicion->cantidad = $request->cantidad;
+            $posicion->save();
+            $data = array(
+                'status' => true,
+                'actualizado' => true,
+                'disponible' => $request->cantidad,
+                'mensaje' => 'Posición actualizada'
+            );
+        }else{
+            $newPos = new IngredientePosicion;
+            $newPos->idIngrediente = $request->idIngrediente;
+            $newPos->posicion = $request->posicion;
+            $newPos->cantidad = $request->cantidad;
+            $newPos->save();
+            $data = array(
+                'status' => true,
+                'actualizado' => false,
+                'disponible' => $request->cantidad,
+                'mensaje' => 'Posición añadida'
+            );
+
+        }
+        return response()->json($data);
+    }
+
+    //  elimina una posicion
+    public function deletePos(Request $request){
+
+        //  se elimina de la tabla
+        $pos = IngredientePosicion::where('posicion', $request->posicion)->delete();
+        if($pos){
+            $data = array(
+                'status' => true,
+                'mensaje' => 'Posición eliminada',
+            );
+        }else{
+            $data = array(
+                'status' => false,
+                'mensaje' => 'Falla al eliminar',
+            );
+        }
+        
+        return response()->json($data);
+    }
+
+    //  Añade un nuevo ingrediente
     public function anadirIngrediente(Request $request){
         $busca = Ingredientes::where('posicion', $request->posicion)->count();
         if($busca == 0){

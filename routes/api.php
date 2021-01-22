@@ -30,6 +30,8 @@ Route::get('/recetas/eliminar/{idReceta}', 'RecetasController@eliminarReceta');
 
 //rutas para ingredientes
 Route::get('/ingredientes', 'IngredientesController@inicio');
+Route::post('/ingredientes/posicion', 'IngredientesController@updatePos');
+Route::post('/ingredientes/posicion/eliminar', 'IngredientesController@deletePos');
 Route::post('/ingredientes/nuevo', 'IngredientesController@anadirIngrediente');
 Route::post('/ingredientes/eliminar', 'IngredientesController@eliminarIngrediente');
 Route::get('/ingredientes/{categoria}', 'IngredientesController@ingredienteCategoria');

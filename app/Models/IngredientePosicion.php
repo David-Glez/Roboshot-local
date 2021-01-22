@@ -9,6 +9,7 @@ class IngredientePosicion extends Model
 {
     
     protected $table = 'ingredientePosicion';
+    protected $primaryKey = 'idIngrediente';
     public $incrementing = false;
     protected $fillable = [
         'idIngrediente', 'posicion', 'cantidad'
