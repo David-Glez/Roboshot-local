@@ -13,7 +13,6 @@ use App\Models\RecetaIngredienteManual;
 use App\Models\IngredienteVendido;
 use App\Models\BebidaVendida;
 use App\Models\Categorias;
-use App\Models\IngredientePosicion;
 use Illuminate\Database\Eloquent\Builder;
 
 class IngredientesController extends Controller
@@ -223,6 +222,7 @@ class IngredientesController extends Controller
                     }
                 }
                 $ing->save(); #se guardan cambios en la tabla
+                $ingPos->save();
 
                 // Crea registro ingrediente vendido
                 // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
