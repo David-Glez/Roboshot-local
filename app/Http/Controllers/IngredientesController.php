@@ -13,7 +13,11 @@ use App\Models\RecetaIngredienteManual;
 use App\Models\IngredienteVendido;
 use App\Models\BebidaVendida;
 use App\Models\Categorias;
+
+use Illuminate\Validation\ValidationException;
+
 use Illuminate\Database\Eloquent\Builder;
+
 
 class IngredientesController extends Controller
 {
@@ -73,63 +77,90 @@ class IngredientesController extends Controller
                 'mensaje' => 'Falla al eliminar',
             );
         }
-        
         return response()->json($data);
     }
 
-    //  Añade un nuevo ingrediente
-    public function anadirIngrediente(Request $request){
-        $busca = Ingredientes::where('posicion', $request->posicion)->count();
-        if($busca == 0){
-            $nuevoIngrediente = new Ingredientes;
-            $nuevoIngrediente->idCategoria = $request->categoria;
-            $nuevoIngrediente->marca = $request->marca;
-            $nuevoIngrediente->precio = $request->precio;
-            $nuevoIngrediente->cantidadTotal = $request->cantidad;
-            $nuevoIngrediente->cantidadDisponible = $request->cantidad;
-            $nuevoIngrediente->posicion = $request->posicion;
-            $nuevoIngrediente->precioCompra = $request->precioCompra;
-            $nuevoIngrediente->precioVenta = $request->precioVenta;
-            $nuevoIngrediente->save();
-            $id = $nuevoIngrediente->idIngrediente;
+    //  añade o modifica un ingrediente
+    public function updateIngrediente(Request $request){
+        try{
+            $request->validate([
+                'id' =>  ['required'],
+                'nombre' => ['required'],
+                'cantidad' => ['required'],
+                'precioCompra' => ['required'],
+                'precioVenta' => ['required'],
+                'precioMl' => ['required'],
+                'categoria' => ['required']
+            ]);
 
-            $ingrediente = array(
-                'nuevo' => true,
-                'id' => $id,
-                'posicion' => $request->posicion
+            $ingrediente = Ingredientes::find($request->id);
+            if($ingrediente == null){
+
+                $newIng = new Ingredientes;
+                $newIng->idCategoria = $request->categoria;
+                $newIng->marca = $request->nombre;
+                $newIng->precio = $request->precioMl;
+                $newIng->cantidadTotal = $request->cantidad;
+                $newIng->precioCompra = $request->precioCompra;
+                $newIng->precioVenta = $request->precioVenta;
+                $newIng->save();
+
+                $data = array(
+                    'status' => true,
+                    'mensaje' => 'Ingrediente insertado',
+                    'data' => $newIng,
+                );
+            }else{
+                $ingrediente->marca = $request->nombre;
+                $ingrediente->precio = $request->precioMl;
+                $ingrediente->cantidadTotal = $request->cantidad;
+                $ingrediente->precioCompra = $request->precioCompra;
+                $ingrediente->precioVenta = $request->precioVenta;
+                $ingrediente->save();
+
+                $data = array(
+                    'status' => true,
+                    'mensaje' => 'Ingrediente actualizado',
+                    'data' => $ingrediente,
+                );
+            }
+        }catch(ValidationException $e){
+            $errors = [];
+            foreach($e->errors() as $item) {
+                foreach($item as $x){
+                    $errors[] = $x;
+                }
+            }
+            $data = array(
+                'status' => false,
+                'mensaje' => $errors,
             );
-        }else{
-            $ingrediente = array(
-                'nuevo' => false,
-                'posicion' => 'Ya existe esta posición'
-            );
+                return $data;
         }
-
-        return response()->json($ingrediente);
+        return response()->json($data);
     }
 
-    //eliminar un ingrediente
+    //  elimina un ingrediente siempre y cuando no exista en alguna posicion
     public function eliminarIngrediente(Request $request){
 
-        //verifica que el ingrediente no exista en una receta
-        $busca = Ingredientes::where('posicion', $request->posicion)->first();
-        
-        $recetaIng = RecetaIngrediente::where('idIngrediente', $busca->idIngrediente)->count();
+        $id = $request->id;
+        $busca = IngredientePosicion::where('idIngrediente', $id)->count();
 
-        if($recetaIng > 0){
-            $respuesta = array(
-                'estado' => false,
-                'mensaje' => 'No se puede eliminar el ingrediente. Existe una receta que lo utiliza.'
+        if($busca > 0){
+            $data = array(
+                'status' => false,
+                'mensaje' => 'El ingrediente existe en la posicion '
             );
         }else{
-            $elimina = Ingredientes::where('posicion', $request->posicion)->delete();
-            $respuesta = array(
-                'estado' => true,
-                'mensaje' => 'Ingrediente eliminado.'
+
+            $eliminar = Ingredientes::find($id)->delete();
+            $data = array(
+                'status' => true,
+                'mensaje' => 'Ingrediente eliminado',
+                'data' => $id
             );
         }
-
-        return response()->json($respuesta);
+        return response()->json($data);
     }
 
     // muestra ingrediente por categoria 
