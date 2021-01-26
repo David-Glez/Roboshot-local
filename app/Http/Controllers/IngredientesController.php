@@ -13,7 +13,11 @@ use App\Models\RecetaIngredienteManual;
 use App\Models\IngredienteVendido;
 use App\Models\BebidaVendida;
 use App\Models\Categorias;
+
 use Illuminate\Validation\ValidationException;
+
+use Illuminate\Database\Eloquent\Builder;
+
 
 class IngredientesController extends Controller
 {
@@ -161,7 +165,9 @@ class IngredientesController extends Controller
 
     // muestra ingrediente por categoria 
     public function ingredienteCategoria($Categoria){
-        $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->where('idIngrediente','!=', 10)->where('idIngrediente','!=', 11)->get();
+        //$ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->where('idIngrediente','!=', 10)->where('idIngrediente','!=', 11)->get();
+
+        $ingredientes = Ingredientes::where('idCategoria', '=', $Categoria)->get();
 
         return response()->json($ingredientes);
     }
@@ -210,23 +216,25 @@ class IngredientesController extends Controller
 
     // funcion para descontar ingredientes al solicitar receta
     public function descuentaIngredientes(Request $request){
-
+        
         $contador = 0;
         $porcentaje = 0;
         $ingredientes = [];
         $color = '';
         $inactivas = [];
 
-        for($i = 0; $i < count($request->bebidas); $i++){
-            foreach($request->bebidas[$i]["ingredientes"] as $key => $val){
-                $descuento = 0;
-                $ing = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
-                $descuento = $ing->cantidadDisponible - $val; #se decrementa la cantidad disponible
-                $ing->cantidadDisponible = $descuento; #se asigna nueva cantidad disponible
-                if($ing->cantidadTotal <= 0)
+        foreach($request->bebidas as $bebida){
+            foreach($bebida["ingredientes"] as $ing_req){
+                $ing = Ingredientes::find($ing_req["idIngrediente"]);
+                $ingPos = IngredientePosicion::where("posicion", $ing_req["posicion"])->first();
+
+                $ingPos->cantidad = $ingPos->cantidad - $ing_req["cantidad"]; #se decrementa la cantidad disponible
+
+                if($ingPos->cantidad <= 0)
                     $porcentaje = 0;
                 else
-                    $porcentaje = ($descuento * 100) / $ing->cantidadTotal; #se saca el porcentaje para ver que ingredientes se estan agotando
+                    $porcentaje = $ingPos->cantidad / $ing->cantidadTotal * 100.0; #se saca el porcentaje para ver que ingredientes se estan agotando
+
                 #verificamos en que nivel se encuentra el ingrediente
                 if($porcentaje >= 20 && $porcentaje <= 30){
                     $contador++;
@@ -245,113 +253,15 @@ class IngredientesController extends Controller
                     }
                 }
                 $ing->save(); #se guardan cambios en la tabla
+                $ingPos->save();
 
                 // Crea registro ingrediente vendido
                 // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
-                $this->creaRegistroIngredienteVendido($request->numOrden, $ing, $val);
+                $this->creaRegistroIngredienteVendido($request->numOrden, $ing, $ing_req["cantidad"]);
             }
-            $this->creaRegistroBebidaVendida($request->numOrden, $request->bebidas[$i]["nombre"]);
+            //$this->creaRegistroBebidaVendida($request->numOrden, $request->bebidas[$i]["nombre"]);
+            $this->creaRegistroBebidaVendida($request->numOrden, $bebida["nombre"]);
         }
-
-        //en el caso de que la receta a descontar sea personalizada
-        /*if($request->personalizado == true){
-            //decodifica la lista de ingredientes
-            $array = json_decode($request->bebidas);
-            $ganancia = 0;
-
-            // se recorre el arreglo de ingredientes
-            foreach($array as $key => $val){
-                if($val != 0){
-                    $descuento = 0;
-                    $ing = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
-                    $descuento = $ing->cantidadDisponible - $val; #se decrementa la cantidad disponible
-                    $ing->cantidadDisponible = $descuento; #se asigna nueva cantidad disponible
-                    $shot = $val/10; #numero de shots
-                    $ganancia += ( ($ing->precioVenta - $ing->precioCompra) / ($ing->precioVenta / $ing->precio) ) * $shot  ; #sacamos ( (gananciatotal) / (numero de shot's) * shot's comprados)
-                    $porcentaje = ($descuento * 100) / $ing->cantidadTotal;
-                    if($porcentaje < 50){
-                        $contador++;
-                    }
-                    $ing->save(); #se guardan cambios en la tabla
-
-                    //$this->creaRegistroIngredienteVendido($request->folio, $ing, $val); // val = cantidad descontada del shot???
-                    $data = array(
-                        'posicion' => $key,
-                        'cantidad' => $val
-                    );
-                    $ingredientes[] = $data;
-                }
-            }
-
-            // se crea el registro de la venta
-            //$fecha = date_create();
-            /*$fecha = Carbon::now();
-
-            $venta = new Ventas;
-            $venta->idReceta = 1;
-            $venta->precio = $request->total;
-            $venta->ganancia = $ganancia;
-            $venta->fecha = $fecha->format('d-m-Y');
-            $venta->hora = $fecha->format('H:i:s');
-            $venta->save();
-
-            $ingredientes[] = $array;
-            $idVenta = $venta->idVenta;
-
-            // insertar ingredientes vendidos de acuerdo al id de venta
-            /*foreach($array as $key => $val){
-                if($val != 0){
-                    $ingManual = Ingredientes::where('posicion', $key)->first(); #se busca el ingrediente
-                    $recetaManual = new recetaIngredienteManual;
-                    $recetaManual->codPedido = $idVenta;
-                    $recetaManual->idIngrediente = $ingManual->idIngrediente;
-                    $recetaManual->cantidad = $val;
-                    $recetaManual->save();
-                }
-            }
-        }else{
-
-            for($i=0; $i<count($request->bebidas); $i++){
-                foreach( $request->bebidas[$i] as $key => $val) {
-                    $id = $val; //id de receta
-                    $listaIngredientes = RecetaIngrediente::where('idReceta','=',$id)->select('idIngrediente','cantidad')->get();
-                   // $ingredientes[] = $listaIngredientes;
-                    $ganancia = 0;
-                    foreach($listaIngredientes as $lista){
-                        $descuento = 0;
-                        $ing = Ingredientes::find($lista->idIngrediente);
-                        $descuento = $ing->cantidadDisponible - $lista->cantidad;
-                        $ing->cantidadDisponible = $descuento;
-                        $ganancia += ( ($ing->precioVenta - $ing->precioCompra) / ($ing->precioVenta / $ing->precio) )* ($lista->cantidad / 10); #sacamos ( (gananciatotal) / (numero de shot's) * shot's comprados)
-                        //verificar si queda liquido disponible
-                        $porcentaje = ($descuento * 100) / $ing->cantidadTotal;
-                        if($porcentaje < 50){
-                            $contador++;
-                        }
-                        $ing->save(); 
-                        
-                        $this->creaRegistroIngredienteVendido($request->folio, $ing, $lista->cantidad);
-
-                        $data = array(
-                            'posicion' => $ing->posicion,
-                            'cantidad' => $lista->cantidad
-                        );
-                        $ingredientes[] = $data;
-                    }
-                    /*$receta = Recetas::find($id);
-                    //$fecha = date_create();
-                    /*$fecha = Carbon::now();
-                    $venta = new Ventas;
-                    $venta->idReceta = $id;
-                    $venta->precio = $receta->precio;
-                    $venta->ganancia = $ganancia;
-                    $venta->fecha = $fecha->format('d-m-Y');
-                    $venta->hora = $fecha->format('H:i:s');
-                    $venta->save();
-                break;
-                }
-            }
-        }*/
 
         $data = array(
             'contador' => $contador,
