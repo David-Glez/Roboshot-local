@@ -57,7 +57,7 @@ class RecetasController extends Controller
     /***** Inserta una nueva receta en la BD*****/
     public function anadirReceta(Request $request){
         //return response()->json($request);
-        $array = json_decode( $request->ingredientes );
+        //$array = json_decode( $request->ingredientes );
         /*foreach($array as $key => $val) {
             echo "<script>console.log( 'Debug Objects: " . $val . "' );</script>";
         }*/
@@ -76,27 +76,20 @@ class RecetasController extends Controller
         $receta->save();
 
         $id = $receta->idReceta;
-        $p = 0;
 
-        $list = [];
-        //$array = $request->ingredientes;
-        foreach($array as $key => $val) {
-        
-            $ingre = new RecetaIngrediente;
-            $ingre->idReceta = $id;
-            $ingre->idIngrediente = intval($key);
-            $ingre->cantidad = intval($val);
-            $ingre->save();
+        foreach($request->ingredientes as $ing_req)
+        {
+            $ing = new RecetaIngrediente;
+            $ing->idReceta = $id;
+            $ing->idIngrediente = $ing_req["idIngrediente"];
+            $ing->cantidad = $ing_req["cantidad"];
+            $ing->save();
 
-            $pos = Ingredientes::find(intval($key));
             $dato = array(
-                "idIngrediente" => $pos->idIngrediente,
-                "marca" => $pos->marca, 
-                "posicion" => $pos->posicion,
-                "cantidad" => intval($val)
+                "idIngrediente" => $ing_req["idIngrediente"],
+                "marca" => $ing_req["marca"], 
+                "cantidad" => $ing_req["cantidad"]
             );
-            $list[] = $dato;
-            
         }
 
         $ingredientes = RecetaIngrediente::where('idReceta','=',$id)->join('ingredientes', 'ingredientes.idIngrediente','=','recetaIngrediente.idIngrediente')->select('ingredientes.marca')->get();
@@ -104,7 +97,7 @@ class RecetasController extends Controller
         $data = array(
             "ingredientes" => $ingredientes,
             "receta" => $id,
-            "idIng" => $list
+            "idIng" => $request->ingredientes
         );
 
         return response()->json($data);

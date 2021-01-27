@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 
 use App\Models\Ingredientes;
+use App\Models\IngredientePosicion;
 use App\Models\RecetaIngrediente;
 use App\Models\Venta;
 use App\Models\Recetas;
@@ -13,73 +13,154 @@ use App\Models\RecetaIngredienteManual;
 use App\Models\IngredienteVendido;
 use App\Models\BebidaVendida;
 use App\Models\Categorias;
-use App\Models\IngredientePosicion;
+
+use Illuminate\Validation\ValidationException;
+
 use Illuminate\Database\Eloquent\Builder;
+
 
 class IngredientesController extends Controller
 {
     //Trae todos los ingredientes registrados en la base de datos
     public function inicio(){
-        
+
         //$ingredientes = Ingredientes:all();
         $ingredientes = Ingredientes::with('ingPos')->get();
 
         return response()->json($ingredientes);
     }
 
-    //Añade un nuevo ingrediente
-    public function anadirIngrediente(Request $request){
-        $busca = Ingredientes::where('posicion', $request->posicion)->count();
-        if($busca == 0){
-            $nuevoIngrediente = new Ingredientes;
-            $nuevoIngrediente->idCategoria = $request->categoria;
-            $nuevoIngrediente->marca = $request->marca;
-            $nuevoIngrediente->precio = $request->precio;
-            $nuevoIngrediente->cantidadTotal = $request->cantidad;
-            $nuevoIngrediente->cantidadDisponible = $request->cantidad;
-            $nuevoIngrediente->posicion = $request->posicion;
-            $nuevoIngrediente->precioCompra = $request->precioCompra;
-            $nuevoIngrediente->precioVenta = $request->precioVenta;
-            $nuevoIngrediente->save();
-            $id = $nuevoIngrediente->idIngrediente;
-
-            $ingrediente = array(
-                'nuevo' => true,
-                'id' => $id,
-                'posicion' => $request->posicion
+    //  actualiza la posicion con el ingrediente enviado
+    public function updatePos(Request $request){
+        $id = $request->id;
+        $pos = $request->posicion;
+        $posicion = IngredientePosicion::where('idIngrediente',$id)->where('posicion', $pos)->first();
+        if($posicion){
+            $posicion->cantidad = $request->cantidad;
+            $posicion->save();
+            $data = array(
+                'status' => true,
+                'actualizado' => true,
+                'disponible' => $request->cantidad,
+                'mensaje' => 'Posición actualizada'
             );
         }else{
-            $ingrediente = array(
-                'nuevo' => false,
-                'posicion' => 'Ya existe esta posición'
+            $newPos = new IngredientePosicion;
+            $newPos->idIngrediente = $request->idIngrediente;
+            $newPos->posicion = $request->posicion;
+            $newPos->cantidad = $request->cantidad;
+            $newPos->save();
+            $data = array(
+                'status' => true,
+                'actualizado' => false,
+                'disponible' => $request->cantidad,
+                'mensaje' => 'Posición añadida'
             );
-        }
 
-        return response()->json($ingrediente);
+        }
+        return response()->json($data);
     }
 
-    //eliminar un ingrediente
-    public function eliminarIngrediente(Request $request){
+    //  elimina una posicion
+    public function deletePos(Request $request){
 
-        //verifica que el ingrediente no exista en una receta
-        $busca = Ingredientes::where('posicion', $request->posicion)->first();
-        
-        $recetaIng = RecetaIngrediente::where('idIngrediente', $busca->idIngrediente)->count();
-
-        if($recetaIng > 0){
-            $respuesta = array(
-                'estado' => false,
-                'mensaje' => 'No se puede eliminar el ingrediente. Existe una receta que lo utiliza.'
+        //  se elimina de la tabla
+        $pos = IngredientePosicion::where('posicion', $request->posicion)->delete();
+        if($pos){
+            $data = array(
+                'status' => true,
+                'mensaje' => 'Posición eliminada',
             );
         }else{
-            $elimina = Ingredientes::where('posicion', $request->posicion)->delete();
-            $respuesta = array(
-                'estado' => true,
-                'mensaje' => 'Ingrediente eliminado.'
+            $data = array(
+                'status' => false,
+                'mensaje' => 'Falla al eliminar',
             );
         }
+        return response()->json($data);
+    }
 
-        return response()->json($respuesta);
+    //  añade o modifica un ingrediente
+    public function updateIngrediente(Request $request){
+        try{
+            $request->validate([
+                'id' =>  ['required'],
+                'nombre' => ['required'],
+                'cantidad' => ['required'],
+                'precioCompra' => ['required'],
+                'precioVenta' => ['required'],
+                'precioMl' => ['required'],
+                'categoria' => ['required']
+            ]);
+
+            $ingrediente = Ingredientes::find($request->id);
+            if($ingrediente == null){
+
+                $newIng = new Ingredientes;
+                $newIng->idCategoria = $request->categoria;
+                $newIng->marca = $request->nombre;
+                $newIng->precio = $request->precioMl;
+                $newIng->cantidadTotal = $request->cantidad;
+                $newIng->precioCompra = $request->precioCompra;
+                $newIng->precioVenta = $request->precioVenta;
+                $newIng->save();
+
+                $data = array(
+                    'status' => true,
+                    'mensaje' => 'Ingrediente insertado',
+                    'data' => $newIng,
+                );
+            }else{
+                $ingrediente->marca = $request->nombre;
+                $ingrediente->precio = $request->precioMl;
+                $ingrediente->cantidadTotal = $request->cantidad;
+                $ingrediente->precioCompra = $request->precioCompra;
+                $ingrediente->precioVenta = $request->precioVenta;
+                $ingrediente->save();
+
+                $data = array(
+                    'status' => true,
+                    'mensaje' => 'Ingrediente actualizado',
+                    'data' => $ingrediente,
+                );
+            }
+        }catch(ValidationException $e){
+            $errors = [];
+            foreach($e->errors() as $item) {
+                foreach($item as $x){
+                    $errors[] = $x;
+                }
+            }
+            $data = array(
+                'status' => false,
+                'mensaje' => $errors,
+            );
+                return $data;
+        }
+        return response()->json($data);
+    }
+
+    //  elimina un ingrediente siempre y cuando no exista en alguna posicion
+    public function eliminarIngrediente(Request $request){
+
+        $id = $request->id;
+        $busca = IngredientePosicion::where('idIngrediente', $id)->count();
+
+        if($busca > 0){
+            $data = array(
+                'status' => false,
+                'mensaje' => 'El ingrediente existe en la posicion '
+            );
+        }else{
+
+            $eliminar = Ingredientes::find($id)->delete();
+            $data = array(
+                'status' => true,
+                'mensaje' => 'Ingrediente eliminado',
+                'data' => $id
+            );
+        }
+        return response()->json($data);
     }
 
     // muestra ingrediente por categoria 
@@ -172,6 +253,7 @@ class IngredientesController extends Controller
                     }
                 }
                 $ing->save(); #se guardan cambios en la tabla
+                $ingPos->save();
 
                 // Crea registro ingrediente vendido
                 // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
