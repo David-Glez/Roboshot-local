@@ -271,4 +271,60 @@ class IngredientesController extends Controller
         );
         return response()->json($data);
     }
+
+    public function asignaPosicionesIngrediente($ing, $allIngPositions)
+    {
+        $ingPositions = $allIngPositions->where('idIngrediente', $ing["idIngrediente"]);
+        $cantidadServir = $ing["cantidad"];
+
+        $ing["posiciones"] = [];
+
+        foreach($ingPositions as $ingPos)
+        {
+            // ingPos is empty, move on to the next one
+            if($ingPos->cantidad <= 0)
+                continue;
+
+            // there's enough ingredient in a single ingPos, we're done
+            if($ingPos->cantidad >= $cantidadServir)
+            {
+                $ing["posiciones"][] = array('posicion' => $ingPos->posicion, 'cantidad' => $cantidadServir);
+                $ingPos->cantidad -= $cantidadServir;
+                $cantidadServir = 0;
+
+                break;
+            }
+
+            // there's not enough ingredient here, we gotta visit multiple positions
+            // squeeze as much as possible outta this ingredientePosicion
+            $ing["posiciones"][] = array('posicion' => $ingPos->posicion, 'cantidad' => $ingPos->cantidad);
+            $cantidadServir -= $ingPos->cantidad;
+            $ingPos->cantidad = 0;
+        }
+
+        return $ing;
+    }
+
+    public function asignaPosiciones(Request $request)
+    {
+        $ingPositions = IngredientePosicion::select('idIngrediente', 'posicion', 'cantidad')->get();
+
+        $bebidas = [];
+
+        foreach($request->all() as $bebida)
+        {
+            $i = 0;
+            foreach($bebida["ingredientes"] as $ing)
+            {
+                $ingWithPos = $this->asignaPosicionesIngrediente($ing, $ingPositions);
+                $bebida["ingredientes"][$i] = $ingWithPos;
+                $i++;
+            }
+
+            $bebidas[] = $bebida;
+        }
+
+        return response()->json($bebidas);
+
+    }
 }
