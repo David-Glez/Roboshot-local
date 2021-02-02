@@ -272,6 +272,54 @@ class IngredientesController extends Controller
         return response()->json($data);
     }
 
+    public function validaPreparacionBebida(Request $request)
+    {
+        $ingredientes_sum = [];
+
+        // sum all ingredients in bebibas we know we can prepare
+        foreach($request->all()["bebidas"] as $bebida)
+        {
+            foreach($bebida["ingredientes"] as $ing)
+            {
+                $ing_found = array_search($ing["idIngrediente"] , array_column($ingredientes_sum, 'idIngrediente'));
+                if($ing_found !== false)
+                    $ingredientes_sum[$ing_found]["cantidad"] += $ing["cantidad"];  
+                else
+                    $ingredientes_sum[] = ["cantidad" => $ing["cantidad"], "idIngrediente" => $ing["idIngrediente"]];
+            }    
+        }
+
+        // add to that the new bebida ingredients we want to prepare
+        foreach($request->all()["newBebida"] as $ing)
+        {
+            $ing_found = array_search($ing["idIngrediente"] , array_column($ingredientes_sum, 'idIngrediente'));
+            if($ing_found !== false)
+                $ingredientes_sum[$ing_found]["cantidad"] += $ing["cantidad"];  
+            else
+                $ingredientes_sum[] = ["cantidad" => $ing["cantidad"], "idIngrediente" => $ing["idIngrediente"]];
+        }    
+
+
+        // then check if we have enough ingredients to prepare the order
+        $canBePrepared = true;
+
+        $allIngredients = Ingredientes::all();
+
+        foreach($ingredientes_sum as $ing_sum)
+        {
+            $cantidad = $allIngredients->find($ing_sum["idIngrediente"])->cantidad;
+            
+            // if we have less of any inrgedient than the total amount requested, we can't make the order with the newly added bebida
+            if($cantidad < $ing_sum["cantidad"])
+            {
+                $canBePrepared = false;
+                break;
+            }
+        }
+
+        return response()->json(["canBePrepared" => $canBePrepared]);
+    }
+
     public function asignaPosicionesIngrediente($ing, $allIngPositions)
     {
         $ingPositions = $allIngPositions->where('idIngrediente', $ing["idIngrediente"]);

@@ -37,6 +37,7 @@ Route::post('/ingredientes/eliminar', 'IngredientesController@eliminarIngredient
 Route::get('/ingredientes/{categoria}', 'IngredientesController@ingredienteCategoria');
 Route::post('/ingredientes/descuenta', 'IngredientesController@descuentaIngredientes');
 Route::post('/ingredientes/asignaPosiciones', 'IngredientesController@asignaPosiciones');
+Route::post('/ingredientes/validaPreparacionBebida', 'IngredientesController@validaPreparacionBebida');
 
 //rutas para categorias
 Route::get('/categorias', 'CategoriasController@inicio');
