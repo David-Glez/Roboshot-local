@@ -277,17 +277,18 @@ class IngredientesController extends Controller
         $ingredientes_sum = [];
 
         // sum all ingredients in bebibas we know we can prepare
-        foreach($request->all()["bebidas"] as $bebida)
-        {
-            foreach($bebida["ingredientes"] as $ing)
+        if(isset($request->all()["bebidas"]))
+            foreach($request->all()["bebidas"] as $bebida)
             {
-                $ing_found = array_search($ing["idIngrediente"] , array_column($ingredientes_sum, 'idIngrediente'));
-                if($ing_found !== false)
-                    $ingredientes_sum[$ing_found]["cantidad"] += $ing["cantidad"];  
-                else
-                    $ingredientes_sum[] = ["cantidad" => $ing["cantidad"], "idIngrediente" => $ing["idIngrediente"]];
-            }    
-        }
+                foreach($bebida["ingredientes"] as $ing)
+                {
+                    $ing_found = array_search($ing["idIngrediente"] , array_column($ingredientes_sum, 'idIngrediente'));
+                    if($ing_found !== false)
+                        $ingredientes_sum[$ing_found]["cantidad"] += $ing["cantidad"];  
+                    else
+                        $ingredientes_sum[] = ["cantidad" => $ing["cantidad"], "idIngrediente" => $ing["idIngrediente"]];
+                }    
+            }
 
         // add to that the new bebida ingredients we want to prepare
         foreach($request->all()["newBebida"] as $ing)
