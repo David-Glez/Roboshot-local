@@ -16,7 +16,7 @@ class CreateIngredientePosicionsTable extends Migration
         Schema::create('ingredientePosicion', function (Blueprint $table) {
             $table->integer('posicion')->primary();
             $table->integer('idIngrediente');
-            $table->integer('cantidad');
+            $table->decimal('cantidad', 8, 2);
             $table->timestamps();
         });
     }
