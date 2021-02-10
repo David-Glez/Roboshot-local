@@ -257,9 +257,8 @@ class IngredientesController extends Controller
                 $ing->save(); #se guardan cambios en la tabla
 
                 // Crea registro ingrediente vendido
-                // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
-                
-                //$this->creaRegistroIngredienteVendido($request->numOrden, $ing, $ing_req["cantidad"]);
+                // idVenta = id orden, ing_data = ingrediente en memoria leido de la base, cantidad = cantidad a descontar
+                $this->creaRegistroIngredienteVendido($request->numOrden, $ing, $ing_req["cantidad"]);
             }
             //$this->creaRegistroBebidaVendida($request->numOrden, $request->bebidas[$i]["nombre"]);
             $this->creaRegistroBebidaVendida($request->numOrden, $bebida["nombre"]);
