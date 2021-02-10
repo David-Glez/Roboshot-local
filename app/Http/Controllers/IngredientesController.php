@@ -213,8 +213,13 @@ class IngredientesController extends Controller
 
         $bebida_vendida->save();
     }
-
-    // funcion para descontar ingredientes al solicitar receta
+    
+    /**
+     * Recibe el Json de la orden con los ingredientes y descuenta la cantidad utilizada del ingrediente en sus
+     * respectivas posiciones, verifica su cantidad restante y desactiva las recetas que ya no puedan ser servidas
+     * @param JSON $orden JSON que contiene las bebidas e ingredientes a descontar
+     * @return Array $data arreglo con el contador y las bebidas que fueron desactivadas
+     */
     public function descuentaIngredientes(Request $request){
         $contador = 0;
         $porcentaje = 0;
@@ -225,18 +230,12 @@ class IngredientesController extends Controller
         foreach($request->bebidas as $bebida){
             foreach($bebida["ingredientes"] as $ing_req){
                 $ing = Ingredientes::find($ing_req["idIngrediente"]);
-                #$ing = Ingredientes::where('idIngrediente',$ing_req['idIngrediente'])->select('idIngrediente')->first();
-                #return $ing;
                 foreach($ing_req['posiciones'] as $arrPosiciones){
                     $ingPos = IngredientePosicion::where("posicion", $arrPosiciones["posicion"])->first();
-                    #return $ingPos;
                     $ingPos->cantidad = $ingPos->cantidad - $arrPosiciones["cantidad"]; #se decrementa la cantidad disponible
-                    #return $ingPos->cantidad;
-                    if($ingPos->cantidad <= 0)
-                        $porcentaje = 0;
-                    else
-                        $porcentaje = $ingPos->cantidad / $ing->cantidadTotal * 100.0; #se saca el porcentaje para ver que ingredientes se estan agotando
                     $ingPos->save();
+                    $porcentaje = $this->calculaPorcentaje($ing->idIngrediente);
+                  
                     #verificamos en que nivel se encuentra el ingrediente
                     if($porcentaje >= 20 && $porcentaje <= 30){
                         $contador++;
@@ -254,12 +253,11 @@ class IngredientesController extends Controller
                             $r->save();
                         }
                     }
-                    #$ing->save(); #se guardan cambios en la tabla
                     
+                }    
 
-                    // Crea registro ingrediente vendido
-                    // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
-                }
+                // Crea registro ingrediente vendido
+                // idVenta = id orden, ing_data = ingrediente en memoria leido de la base, cantidad = cantidad a descontar
                 $this->creaRegistroIngredienteVendido($request->numOrden, $ing, $ing_req["cantidad"]);
             }
             //$this->creaRegistroBebidaVendida($request->numOrden, $request->bebidas[$i]["nombre"]);
@@ -272,8 +270,28 @@ class IngredientesController extends Controller
             'inactivas' => $inactivas,
             'lista' => $ingredientes
         );
+        
         return response()->json($data);
+    } 
+
+    /**
+	 * Calcula el porcentaje total restante del ingrediente
+	 *
+	 * @param Int $idIngrediente  identificador del ingrediente
+	 * @return Int $porcentaje  porcentaje restante del ingrediente
+	 */
+    public function calculaPorcentaje($idIngrediente){
+        #sumatoria de la cantidad disponible del ingrediente en todas sus posiciones
+        $canDisponible = IngredientePosicion::where('idIngrediente',$idIngrediente)->sum('cantidad');
+        #sumatoria de la cantidad total del ingredinte en todas sus posiciones
+        $canTotal = IngredientePosicion::where('idIngrediente',$idIngrediente)->sum('cantidadTotal');
+
+        $porcentaje = ($canDisponible / $canTotal) * 100;
+
+        return $porcentaje;
     }
+
+    
 
     public function validaPreparacionBebida(Request $request)
     {
