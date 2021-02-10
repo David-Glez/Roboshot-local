@@ -225,9 +225,14 @@ class IngredientesController extends Controller
         foreach($request->bebidas as $bebida){
             foreach($bebida["ingredientes"] as $ing_req){
                 $ing = Ingredientes::find($ing_req["idIngrediente"]);
-                foreach($ing_req['posiciones'] as $arrPosiciones){
-                    $ingPos = IngredientePosicion::where("posicion", $arrPosiciones["posicion"])->first();
+
+                dd($ing_req['posiciones']);
+
+                foreach($ing_req['posiciones'] as $pos){
+                    $ingPos = IngredientePosicion::where("posicion", $pos["posicion"])->first();
                     $ingPos->cantidad = $ingPos->cantidad - $arrPosiciones["cantidad"]; #se decrementa la cantidad disponible
+                    $ingPos->save();
+                }
 
                     if($ingPos->cantidad <= 0)
                         $porcentaje = 0;
@@ -252,11 +257,11 @@ class IngredientesController extends Controller
                         }
                     }
                     $ing->save(); #se guardan cambios en la tabla
-                    $ingPos->save();
+                    
 
                     // Crea registro ingrediente vendido
                     // folio = id, ing = ingrediente en memoria leido de la base, val = cantidad a descontar
-                }
+                
                 $this->creaRegistroIngredienteVendido($request->numOrden, $ing, $ing_req["cantidad"]);
             }
             //$this->creaRegistroBebidaVendida($request->numOrden, $request->bebidas[$i]["nombre"]);

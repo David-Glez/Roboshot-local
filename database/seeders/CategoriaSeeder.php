@@ -47,5 +47,9 @@ class CategoriaSeeder extends Seeder
         DB::table('categorias')->insert([
             'nombre' => 'Solidos'
         ]);
+        #7
+        DB::table('categorias')->insert([
+            'nombre' => 'Salsas'
+        ]);
     }
 }
