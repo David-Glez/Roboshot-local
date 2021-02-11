@@ -30,42 +30,42 @@ class RecetasDemoSeeder extends Seeder
             'idCategoria' => 7,
             'marca' => 'Hielo',
             'precio' => 0.00,
-            'cantidadTotal' => 1000,
             'precioCompra' => 0,
             'precioVenta' => 0
         ]);
         IngredientePosicion::create([
             'posicion' => 1,
             'idIngrediente' => $hielo->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $sal = Ingredientes::create([
             'idCategoria' => 7,
             'marca' => 'Sal',
             'precio' => 0.00,
-            'cantidadTotal' => 1000,
             'precioCompra' => 0,
             'precioVenta' => 0
         ]);
         IngredientePosicion::create([
             'posicion' => 2,
             'idIngrediente' => $sal->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $azucar = Ingredientes::create([
             'idCategoria' => 7,
             'marca' => 'Azucar',
             'precio' => 0.00,
-            'cantidadTotal' => 1000,
             'precioCompra' => 0,
             'precioVenta' => 0
         ]);
         IngredientePosicion::create([
             'posicion' => 3,
             'idIngrediente' => $azucar->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         // 1, 2, 3 alcohol
@@ -73,42 +73,42 @@ class RecetasDemoSeeder extends Seeder
             'idCategoria' => 1,
             'marca' => 'Cazadores',
             'precio' => 600 / 400 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 400,
             'precioVenta' => 600
         ]);
         IngredientePosicion::create([
             'posicion' => 4,
             'idIngrediente' => $tequila->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $vodka = Ingredientes::create([
             'idCategoria' => 2,
             'marca' => 'Smirnoff',
             'precio' => 600 / 300 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 300,
             'precioVenta' => 600
         ]);
         IngredientePosicion::create([
             'posicion' => 5,
             'idIngrediente' => $vodka->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $ron = Ingredientes::create([
             'idCategoria' => 3,
             'marca' => 'Bacardi',
             'precio' => 400 / 250 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 250,
             'precioVenta' => 400
         ]);
         IngredientePosicion::create([
             'posicion' => 6,
             'idIngrediente' => $ron->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         // 4 refrescos
@@ -116,42 +116,42 @@ class RecetasDemoSeeder extends Seeder
             'idCategoria' => 4,
             'marca' => 'Coca-Cola',
             'precio' => 90 / 30 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
         IngredientePosicion::create([
             'posicion' => 7,
             'idIngrediente' => $coca_cola->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $refresco_toronja = Ingredientes::create([
             'idCategoria' => 4,
             'marca' => 'Toronja',
             'precio' => 90 / 30 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
         IngredientePosicion::create([
             'posicion' => 8,
             'idIngrediente' => $refresco_toronja->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $agua_mineral = Ingredientes::create([
             'idCategoria' => 4,
             'marca' => 'Agua Mineral',
             'precio' => 90 / 30 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
         IngredientePosicion::create([
             'posicion' => 9,
             'idIngrediente' => $agua_mineral->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         // 5 jugos y jarabes
@@ -159,70 +159,70 @@ class RecetasDemoSeeder extends Seeder
             'idCategoria' => 5,
             'marca' => 'Jugo de Naranja',
             'precio' => 90 / 30 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 10,
             'precioVenta' => 40
         ]);
         IngredientePosicion::create([
             'posicion' => 10,
             'idIngrediente' => $jugo_naranja->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $jugo_arandano = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Jugo de Arandano',
             'precio' => 70 / 20 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 20,
             'precioVenta' => 70
         ]);
         IngredientePosicion::create([
             'posicion' => 11,
             'idIngrediente' => $jugo_arandano->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $sangrita = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Sangrita',
             'precio' => 70 / 20 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 20,
             'precioVenta' => 70
         ]);
         IngredientePosicion::create([
             'posicion' => 12,
             'idIngrediente' => $sangrita->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $granadina = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Granadina',
             'precio' => 70 / 20 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 20,
             'precioVenta' => 70
         ]);
         IngredientePosicion::create([
             'posicion' => 13,
             'idIngrediente' => $granadina->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         $limon = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Jugo de Limon',
             'precio' => 50 / 10 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 5,
             'precioVenta' => 50
         ]);
         IngredientePosicion::create([
             'posicion' => 14,
             'idIngrediente' => $limon->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         // 6 licores
@@ -230,14 +230,14 @@ class RecetasDemoSeeder extends Seeder
             'idCategoria' => 5,
             'marca' => 'Cointreau',
             'precio' => 1100 / 600 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 600,
             'precioVenta' => 1100
         ]);
         IngredientePosicion::create([
             'posicion' => 15,
             'idIngrediente' => $cointreau->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000
         ]);
 
         // 7 salsas
@@ -245,28 +245,28 @@ class RecetasDemoSeeder extends Seeder
             'idCategoria' => 5,
             'marca' => 'Inglesa',
             'precio' => 90 / 30 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
         IngredientePosicion::create([
             'posicion' => 16,
             'idIngrediente' => $inglesa->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 2000,
         ]);
 
         $tabasco = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Tabasco',
             'precio' => 90 / 30 * 10,
-            'cantidadTotal' => 1000,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
         IngredientePosicion::create([
             'posicion' => 17,
             'idIngrediente' => $tabasco->idIngrediente,
-            'cantidad' => 2000
+            'cantidad' => 2000,
+            'cantidadTotal' => 1000,
         ]);
 
 
