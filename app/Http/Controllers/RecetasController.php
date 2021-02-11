@@ -27,7 +27,6 @@ class RecetasController extends Controller
                 $dato = array(
                     "idIngrediente" => $pos->idIngrediente,
                     "marca" => $pos->marca, 
-                    "posicion" => $pos->posicion,
                     "cantidad" => $i->cantidad
                 );
                 $list[] = $dato;
