@@ -17,6 +17,7 @@ class CreateIngredientePosicionsTable extends Migration
             $table->integer('posicion')->primary();
             $table->integer('idIngrediente');
             $table->decimal('cantidad', 8, 2);
+            $table->integer('cantidadTotal'); //cantidad neta de la botella
             $table->timestamps();
         });
     }

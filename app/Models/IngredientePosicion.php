@@ -12,7 +12,7 @@ class IngredientePosicion extends Model
     protected $primaryKey = 'posicion';
     public $incrementing = false;
     protected $fillable = [
-        'idIngrediente', 'posicion', 'cantidad'
+        'idIngrediente', 'posicion', 'cantidad','cantidadTotal'
     ];
 
     public function posIng(){
