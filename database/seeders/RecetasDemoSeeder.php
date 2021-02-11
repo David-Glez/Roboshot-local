@@ -20,6 +20,8 @@ class RecetasDemoSeeder extends Seeder
     {
         $ouncesToMl = 30;
 
+        $appdata = getenv('APPDATA').'\roboshot\roboshotData\img\\';
+
         //////////////////////////////////////////////////
         // definir ingredientes
 
@@ -278,7 +280,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Ron Collins',
             'precio' => 80,
             'activa' => true,
-            'img' => '/images/bebidas/ron.png',
+            'img' => $appdata.'ron_collins.png',
             'mezclar' => true
         ]);
 
@@ -294,7 +296,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Cuba libre',
             'precio' => 60,
             'activa' => true,
-            'img' => '/images/bebidas/cuba_libre.png',
+            'img' => $appdata.'cuba_libre.png',
             'mezclar' => true
         ]);
 
@@ -310,7 +312,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Bacardi Coctel',
             'precio' => 75,
             'activa' => true,
-            'img' => '/images/bebidas/bacardi_coctel.png',
+            'img' => $appdata.'bacardi_coctel.png',
             'mezclar' => true
         ]);
 
@@ -325,7 +327,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Daiquiri',
             'precio' => 90,
             'activa' => true,
-            'img' => '/images/bebidas/daiquiri.png',
+            'img' => $appdata.'daiquiri.png',
             'mezclar' => true
         ]);
 
@@ -340,7 +342,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Cosmopolitan',
             'precio' => 90,
             'activa' => true,
-            'img' => '/images/bebidas/cosmopolitan.png',
+            'img' => $appdata.'cosmopolitan.png',
             'mezclar' => true
         ]);
 
@@ -356,7 +358,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Paloma Rusa',
             'precio' => 70,
             'activa' => true,
-            'img' => '/images/bebidas/paloma_rusa.png',
+            'img' => $appdata.'paloma_rusa.png',
             'mezclar' => true
         ]);
 
@@ -372,7 +374,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Desarmador',
             'precio' => 45,
             'activa' => true,
-            'img' => '/images/bebidas/desarmador.png',
+            'img' => $appdata.'desarmador.png',
             'mezclar' => true
         ]);
 
@@ -386,7 +388,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Vampiro',
             'precio' => 95,
             'activa' => true,
-            'img' => '/images/bebidas/vampiro.png',
+            'img' => $appdata.'vampiro.png',
             'mezclar' => true
         ]);
 
@@ -404,7 +406,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Paloma',
             'precio' => 40,
             'activa' => true,
-            'img' => '/images/bebidas/paloma.png',
+            'img' => $appdata.'paloma.png',
             'mezclar' => true
         ]);
 
@@ -420,7 +422,7 @@ class RecetasDemoSeeder extends Seeder
 			'descripcion' => 'Tequila Sunrise',
             'precio' => 90,
             'activa' => true,
-            'img' => '/images/bebidas/tequila_sunrise.png',
+            'img' => $appdata.'tequila_sunrise.png',
             'mezclar' => true
         ]);
 
