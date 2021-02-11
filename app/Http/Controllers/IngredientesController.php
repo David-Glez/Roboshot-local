@@ -30,6 +30,26 @@ class IngredientesController extends Controller
         return response()->json($ingredientes);
     }
 
+    public function reportes()
+    {
+        $ingredientes = Ingredientes::all();
+
+        $response = [];
+        foreach($ingredientes as $ing)
+        {
+            $response[] = [
+                'idIngrediente' => $ing->idIngrediente,
+                'marca' => $ing->marca,
+                'categoria' => Categorias::find($ing->idCategoria)->nombre,
+                'cantidad' => $ing->cantidad,
+                'precioCompra' => $ing->precioCompra,
+                'precioVenta' => $ing->precioVenta
+            ];
+        }
+
+        return response()->json($response);
+    }
+
     //  actualiza la posicion con el ingrediente enviado
     public function updatePos(Request $request){
         $id = $request->id;
@@ -264,14 +284,14 @@ class IngredientesController extends Controller
             $this->creaRegistroBebidaVendida($request->numOrden, $bebida["nombre"]);
         }
 
-        $data = array(
+        $response = array(
             'contador' => $contador,
             'color' => $color,
             'inactivas' => $inactivas,
             'lista' => $ingredientes
         );
         
-        return response()->json($data);
+        return response()->json($response);
     } 
 
     /**
