@@ -29,7 +29,6 @@ class RecetasDemoSeeder extends Seeder
         $hielo = Ingredientes::create([
             'idCategoria' => 7,
             'marca' => 'Hielo',
-            'precio' => 0.00,
             'precioCompra' => 0,
             'precioVenta' => 0
         ]);
@@ -43,7 +42,6 @@ class RecetasDemoSeeder extends Seeder
         $sal = Ingredientes::create([
             'idCategoria' => 7,
             'marca' => 'Sal',
-            'precio' => 0.00,
             'precioCompra' => 0,
             'precioVenta' => 0
         ]);
@@ -57,7 +55,6 @@ class RecetasDemoSeeder extends Seeder
         $azucar = Ingredientes::create([
             'idCategoria' => 7,
             'marca' => 'Azucar',
-            'precio' => 0.00,
             'precioCompra' => 0,
             'precioVenta' => 0
         ]);
@@ -72,7 +69,6 @@ class RecetasDemoSeeder extends Seeder
         $tequila = Ingredientes::create([
             'idCategoria' => 1,
             'marca' => 'Cazadores',
-            'precio' => 600 / 400 * 10,
             'precioCompra' => 400,
             'precioVenta' => 600
         ]);
@@ -86,7 +82,6 @@ class RecetasDemoSeeder extends Seeder
         $vodka = Ingredientes::create([
             'idCategoria' => 2,
             'marca' => 'Smirnoff',
-            'precio' => 600 / 300 * 10,
             'precioCompra' => 300,
             'precioVenta' => 600
         ]);
@@ -100,7 +95,6 @@ class RecetasDemoSeeder extends Seeder
         $ron = Ingredientes::create([
             'idCategoria' => 3,
             'marca' => 'Bacardi',
-            'precio' => 400 / 250 * 10,
             'precioCompra' => 250,
             'precioVenta' => 400
         ]);
@@ -115,7 +109,6 @@ class RecetasDemoSeeder extends Seeder
         $coca_cola = Ingredientes::create([
             'idCategoria' => 4,
             'marca' => 'Coca-Cola',
-            'precio' => 90 / 30 * 10,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
@@ -129,7 +122,6 @@ class RecetasDemoSeeder extends Seeder
         $refresco_toronja = Ingredientes::create([
             'idCategoria' => 4,
             'marca' => 'Toronja',
-            'precio' => 90 / 30 * 10,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
@@ -143,7 +135,6 @@ class RecetasDemoSeeder extends Seeder
         $agua_mineral = Ingredientes::create([
             'idCategoria' => 4,
             'marca' => 'Agua Mineral',
-            'precio' => 90 / 30 * 10,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
@@ -158,7 +149,6 @@ class RecetasDemoSeeder extends Seeder
         $jugo_naranja = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Jugo de Naranja',
-            'precio' => 90 / 30 * 10,
             'precioCompra' => 10,
             'precioVenta' => 40
         ]);
@@ -172,7 +162,6 @@ class RecetasDemoSeeder extends Seeder
         $jugo_arandano = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Jugo de Arandano',
-            'precio' => 70 / 20 * 10,
             'precioCompra' => 20,
             'precioVenta' => 70
         ]);
@@ -186,7 +175,6 @@ class RecetasDemoSeeder extends Seeder
         $sangrita = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Sangrita',
-            'precio' => 70 / 20 * 10,
             'precioCompra' => 20,
             'precioVenta' => 70
         ]);
@@ -200,7 +188,6 @@ class RecetasDemoSeeder extends Seeder
         $granadina = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Granadina',
-            'precio' => 70 / 20 * 10,
             'precioCompra' => 20,
             'precioVenta' => 70
         ]);
@@ -214,7 +201,6 @@ class RecetasDemoSeeder extends Seeder
         $limon = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Jugo de Limon',
-            'precio' => 50 / 10 * 10,
             'precioCompra' => 5,
             'precioVenta' => 50
         ]);
@@ -229,7 +215,6 @@ class RecetasDemoSeeder extends Seeder
         $cointreau = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Cointreau',
-            'precio' => 1100 / 600 * 10,
             'precioCompra' => 600,
             'precioVenta' => 1100
         ]);
@@ -244,7 +229,6 @@ class RecetasDemoSeeder extends Seeder
         $inglesa = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Inglesa',
-            'precio' => 90 / 30 * 10,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);
@@ -258,7 +242,6 @@ class RecetasDemoSeeder extends Seeder
         $tabasco = Ingredientes::create([
             'idCategoria' => 5,
             'marca' => 'Tabasco',
-            'precio' => 90 / 30 * 10,
             'precioCompra' => 30,
             'precioVenta' => 90
         ]);

@@ -10,7 +10,7 @@ class Ingredientes extends Model
     protected $table = 'ingredientes';
     protected $primaryKey = 'idIngrediente';
     protected $fillable = [
-        'idCategoria', 'marca', 'precio',  'precioCompra', 'precioVenta'
+        'idCategoria', 'marca',  'precioCompra', 'precioVenta'
     ];
 
 
@@ -19,11 +19,17 @@ class Ingredientes extends Model
     }
 
     public $cantidad;
-    protected $appends = ['cantidad'];
+    public $precioMl;
+    protected $appends = ['cantidad', 'precioMl'];
 
     public function getCantidadAttribute()
     {
         return $this->cantidad;
+    }
+
+    public function getPrecioMlAttribute()
+    {
+        return $this->precioMl;
     }
 
     protected static function boot()
@@ -38,6 +44,8 @@ class Ingredientes extends Model
                 $cantidad += $ingPos->cantidad;
 
             $model->cantidad = $cantidad;
+
+            $model->precioMl = $model->precioVenta / 1000.0;
         });
     }   
 }

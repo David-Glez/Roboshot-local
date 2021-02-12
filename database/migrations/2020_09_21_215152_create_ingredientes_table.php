@@ -17,7 +17,6 @@ class CreateIngredientesTable extends Migration
             $table->bigIncrements('idIngrediente')->unique();
             $table->integer('idCategoria');
             $table->string('marca')->nullable();
-            $table->float('precio', 4,2);
             //$table->integer('cantidadDisponible'); //cantidad disponible de la botella
             //$table->integer('posicion');
             $table->float('precioCompra', 4,2);

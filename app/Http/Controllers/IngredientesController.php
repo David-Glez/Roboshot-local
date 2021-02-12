@@ -119,7 +119,6 @@ class IngredientesController extends Controller
                 $newIng = new Ingredientes;
                 $newIng->idCategoria = $request->categoria;
                 $newIng->marca = $request->nombre;
-                $newIng->precio = $request->precioMl;
                 $newIng->cantidadTotal = $request->cantidad;
                 $newIng->precioCompra = $request->precioCompra;
                 $newIng->precioVenta = $request->precioVenta;
@@ -132,7 +131,6 @@ class IngredientesController extends Controller
                 );
             }else{
                 $ingrediente->marca = $request->nombre;
-                $ingrediente->precio = $request->precioMl;
                 $ingrediente->cantidadTotal = $request->cantidad;
                 $ingrediente->precioCompra = $request->precioCompra;
                 $ingrediente->precioVenta = $request->precioVenta;
