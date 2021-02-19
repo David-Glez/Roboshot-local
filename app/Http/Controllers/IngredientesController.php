@@ -52,32 +52,25 @@ class IngredientesController extends Controller
 
     //  actualiza la posicion con el ingrediente enviado
     public function updatePos(Request $request){
-        $id = $request->id;
+        $id = $request->idIngrediente;
         $pos = $request->posicion;
-        $posicion = IngredientePosicion::where('idIngrediente',$id)->where('posicion', $pos)->first();
-        if($posicion){
-            $posicion->cantidad = $request->cantidad;
-            $posicion->save();
-            $data = array(
-                'status' => true,
-                'actualizado' => true,
-                'disponible' => $request->cantidad,
-                'mensaje' => 'Posición actualizada'
-            );
-        }else{
-            $newPos = new IngredientePosicion;
-            $newPos->idIngrediente = $request->idIngrediente;
-            $newPos->posicion = $request->posicion;
-            $newPos->cantidad = $request->cantidad;
-            $newPos->save();
-            $data = array(
-                'status' => true,
-                'actualizado' => false,
-                'disponible' => $request->cantidad,
-                'mensaje' => 'Posición añadida'
-            );
+        
+        $posicion = IngredientePosicion::updateOrCreate(
+            ['posicion' => $pos, 'idIngrediente' => $id],
+            [
+                'cantidad' => $request->cantidad,
+                'cantidadTotal' => $request->total
+            ]
+        );
 
-        }
+        $ingredientQuantity = Ingredientes::find($id);
+        $data = array(
+            'status' => true,
+            'disponible' => $posicion->cantidad,
+            'mensaje' => 'Posición actualizada',
+            'ing_quantity' => $ingredientQuantity->cantidad
+        );
+        
         return response()->json($data);
     }
 
@@ -102,6 +95,7 @@ class IngredientesController extends Controller
 
     //  añade o modifica un ingrediente
     public function updateIngrediente(Request $request){
+        
         try{
             $request->validate([
                 'id' =>  ['required'],
@@ -112,36 +106,22 @@ class IngredientesController extends Controller
                 'precioMl' => ['required'],
                 'categoria' => ['required']
             ]);
+            $ingredient = Ingredientes::updateOrCreate(
+                ['idIngrediente' => $request->id],
+                [
+                    'idCategoria' => $request->categoria,
+                    'marca' => $request->nombre,
+                    'precioCompra' => $request->precioCompra,
+                    'precioVenta' => $request->precioVenta
+                ]
+            );
 
-            $ingrediente = Ingredientes::find($request->id);
-            if($ingrediente == null){
-
-                $newIng = new Ingredientes;
-                $newIng->idCategoria = $request->categoria;
-                $newIng->marca = $request->nombre;
-                $newIng->cantidadTotal = $request->cantidad;
-                $newIng->precioCompra = $request->precioCompra;
-                $newIng->precioVenta = $request->precioVenta;
-                $newIng->save();
-
-                $data = array(
-                    'status' => true,
-                    'mensaje' => 'Ingrediente insertado',
-                    'data' => $newIng,
-                );
-            }else{
-                $ingrediente->marca = $request->nombre;
-                $ingrediente->cantidadTotal = $request->cantidad;
-                $ingrediente->precioCompra = $request->precioCompra;
-                $ingrediente->precioVenta = $request->precioVenta;
-                $ingrediente->save();
-
-                $data = array(
-                    'status' => true,
-                    'mensaje' => 'Ingrediente actualizado',
-                    'data' => $ingrediente,
-                );
-            }
+            $data = array(
+                'status' => true,
+                'mensaje' => 'Ingrediente actualizado',
+                'data' => $ingredient,
+            );
+            
         }catch(ValidationException $e){
             $errors = [];
             foreach($e->errors() as $item) {
@@ -241,7 +221,6 @@ class IngredientesController extends Controller
     public function descuentaIngredientes(Request $request){
         $contador = 0;
         $porcentaje = 0;
-        $ingredientes = [];
         $color = '';
         $inactivas = [];
 
@@ -282,11 +261,12 @@ class IngredientesController extends Controller
             $this->creaRegistroBebidaVendida($request->numOrden, $bebida["nombre"]);
         }
 
+        $ingredientes = Ingredientes::with('ingPos')->get();
         $response = array(
             'contador' => $contador,
             'color' => $color,
             'inactivas' => $inactivas,
-            'lista' => $ingredientes
+            'ingredientes_pos' => $ingredientes
         );
         
         return response()->json($response);
