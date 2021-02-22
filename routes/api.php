@@ -49,3 +49,9 @@ Route::post('/categorias/actualizar', 'CategoriasController@actualizarCategoria'
 //rutas para ventas
 Route::get('/ventas', 'VentasController@index');
 Route::post('/ventas', 'VentasController@store');
+
+//rutas para eventos
+Route::get('/eventos', 'EventosController@index');
+Route::post('/eventos', 'EventosController@store');
+Route::get('/eventos/{id}', 'EventosController@show');
+Route::get('/eventos/origen/{origen}', 'EventosController@showByOrigen');
