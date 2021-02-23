@@ -45,17 +45,17 @@ class Evento extends Model
                 case 103: //Ingrediente calibrado (modificar cantidad)
                     $model->msg = "Se modifico la cantidad del ingrediente {$info->marca} en la posicion {$info->pos}, de {$info->cantidadPrevia}ml a {$info->cantidadNueva}ml";
                     break;
+                case 104: //Botella agotada (posicion)
+                    $model->msg = "La botella de {$info->marca} en la posicion {$info->pos} se agoto";
+                    break;
+                case 105: //Ingrediente agotado (general)
+                    $model->msg = "El ingrediente {$info->marca} se agoto";
+                    break;
                 case 201: //Receta agregada (dar de alta)
                     $model->msg = "Se agrego la receta {$info->nombre}";
                     break;
                 case 202: //Receta removida (dar de baja)
                     $model->msg = "Se elimino la receta {$info->nombre}";
-                    break;
-                case 302: //Botella agotada (posicion)
-                    $model->msg = "La botella de {$info->marca} en la posicion {$info->pos} se agoto";
-                    break;
-                case 303: //Ingrediente agotado (general)
-                    $model->msg = "El ingrediente {$info->marca} se agoto";
                     break;
                 case 401: //Venta
                     $model->msg = "Se realizo una venta por {$info->total}, id {$info->id}";
