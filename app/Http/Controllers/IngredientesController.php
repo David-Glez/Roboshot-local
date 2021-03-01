@@ -64,14 +64,48 @@ class IngredientesController extends Controller
         );
 
         $ingredientQuantity = Ingredientes::find($id);
+
+        $activas = $this->activaReceta();
         $data = array(
             'status' => true,
             'disponible' => $posicion->cantidad,
             'mensaje' => 'Posición actualizada',
-            'ing_quantity' => $ingredientQuantity->cantidad
+            'ing_quantity' => $ingredientQuantity->cantidad,
+            'activas' => $activas
         );
         
         return response()->json($data);
+    }
+
+    /**
+     * Revisa los ingredientes de las rectas y compara la cantidad total que existe del ingrediente con la cantidad que requiere la receta.
+     * Si confirma que se puede despachar, activa la receta, de lo contrario la sigue dejando inactiva
+     * @return Array $activas: almacena las recetas que se activaron para mandarselas al HMI. 
+     */
+    public function activaReceta(){
+        $activas = [];
+        $bandera = false;
+        $recetas = Recetas::where('activa',false)->where('idReceta','!=',1)->select('idReceta','activa')->get();
+        if(count($recetas) > 0){
+            foreach($recetas as $r){
+                $ingredientes = RecetaIngrediente::where('idReceta',$r->idReceta)->select('idIngrediente','cantidad')->get();
+                foreach($ingredientes as $i){
+                    $bandera = false;
+                    $ingrediente = Ingredientes::find($i->idIngrediente);
+                    if($ingrediente->cantidad >= $i->cantidad){
+                        $bandera = true;
+                    }
+                }
+                if($bandera){
+                    $activas[] = $r->idReceta;
+                }
+                $r->activa = $bandera;
+                $r->save();
+                
+            }
+        }
+
+        return $activas ;
     }
 
     //  elimina una posicion
