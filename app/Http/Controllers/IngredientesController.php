@@ -134,10 +134,8 @@ class IngredientesController extends Controller
             $request->validate([
                 'id' =>  ['required'],
                 'nombre' => ['required'],
-                'cantidad' => ['required'],
                 'precioCompra' => ['required'],
                 'precioVenta' => ['required'],
-                'precioMl' => ['required'],
                 'categoria' => ['required']
             ]);
             $ingredient = Ingredientes::updateOrCreate(
