@@ -323,8 +323,6 @@ class IngredientesController extends Controller
         return $porcentaje;
     }
 
-    
-
     public function validaPreparacionBebida(Request $request)
     {
         $ingredientes_sum = [];
