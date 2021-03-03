@@ -14,7 +14,15 @@ class EventosController extends Controller
      */
     public function index()
     {
-        $eventos = Evento::orderBy('created_at', 'DESC')->get();
+        $eventos = Evento::orderBy('created_at', 'DESC')->paginate(10);
+
+        $eventos = $eventos->toArray();
+        unset($eventos["links"]);
+        unset($eventos["path"]);
+        unset($eventos["first_page_url"]);
+        unset($eventos["last_page_url"]);
+        unset($eventos["prev_page_url"]);
+        unset($eventos["next_page_url"]);
 
         return response()->json($eventos);
     }
