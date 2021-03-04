@@ -49,6 +49,13 @@ Route::post('/categorias/actualizar', 'CategoriasController@actualizarCategoria'
 Route::get('/ventas', 'VentasController@index');
 Route::post('/ventas', 'VentasController@store');
 
+
+//rutas para bebidas vendidas
+Route::get('/bebidas', 'BebidasController@index');
+Route::get('/bebidas/latest', 'BebidasController@getLast');
+Route::get('/bebidas/{id}', 'BebidasController@show');
+
+
 //rutas para eventos
 Route::get('/eventos', 'EventosController@index');
 Route::post('/eventos', 'EventosController@store');

@@ -204,13 +204,14 @@ class IngredientesController extends Controller
 
     // crea un registro en la tabla de un ingrediente vendido, con el id de la venta y los datos del ingrediente
     // tambien calcula la ganancia de la venta
-    public function creaRegistroIngredienteVendido($idVenta, $ing_data, $cantidad)
+    public function creaRegistroIngredienteVendido($idVenta, $idBebida, $ing_data, $cantidad)
     {
         $venta = Venta::find($idVenta);
 
         $ing_vendido = new IngredienteVendido;
         
         $ing_vendido->idVenta = $idVenta;
+        $ing_vendido->idBebida = $idBebida;
 
         $ing_vendido->idIngrediente = $ing_data->idIngrediente;
         $ing_vendido->precioCompra = $ing_data->precioCompra;
@@ -242,6 +243,8 @@ class IngredientesController extends Controller
         $bebida_vendida->nombre = $nombreBebida;
 
         $bebida_vendida->save();
+
+        return $bebida_vendida->id;
     }
     
     /**
@@ -257,6 +260,8 @@ class IngredientesController extends Controller
         $inactivas = [];
 
         foreach($request->bebidas as $bebida){
+            $bebida["id"] = $this->creaRegistroBebidaVendida($request->numOrden, $bebida["nombre"]);
+            
             foreach($bebida["ingredientes"] as $ing_req){
                 $ing = Ingredientes::find($ing_req["idIngrediente"]);
                 foreach($ing_req['posiciones'] as $arrPosiciones){
@@ -287,10 +292,8 @@ class IngredientesController extends Controller
 
                 // Crea registro ingrediente vendido
                 // idVenta = id orden, ing_data = ingrediente en memoria leido de la base, cantidad = cantidad a descontar
-                $this->creaRegistroIngredienteVendido($request->numOrden, $ing, $ing_req["cantidad"]);
+                $this->creaRegistroIngredienteVendido($request->numOrden, $bebida["id"], $ing, $ing_req["cantidad"]);
             }
-            //$this->creaRegistroBebidaVendida($request->numOrden, $request->bebidas[$i]["nombre"]);
-            $this->creaRegistroBebidaVendida($request->numOrden, $bebida["nombre"]);
         }
 
         $ingredientes = Ingredientes::with('ingPos')->get();
