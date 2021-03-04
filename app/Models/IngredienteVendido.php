@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Ingredientes;
 
 class IngredienteVendido extends Model
 {
@@ -13,6 +14,6 @@ class IngredienteVendido extends Model
 
     protected $table = 'ingredientesVendidos';
     protected $fillable = [
-        'idVenta','idIngrediente', 'cantidad', 'precioCompra', 'precioVenta', 'nombre', 'fecha'
+        'idVenta','idIngrediente', 'idBebida', 'cantidad', 'precioCompra', 'precioVenta', 'nombre', 'fecha'
     ];
 }

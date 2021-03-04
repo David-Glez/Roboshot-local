@@ -17,6 +17,7 @@ class CreateIngredientesVendidosTable extends Migration
             $table->id();
             $table->foreignId('idVenta');
             $table->foreignId('idIngrediente');
+            $table->foreignId('idBebida');
             $table->float('cantidad', 4,2);
             $table->float('precioCompra', 4,2);
             $table->float('precioVenta', 4,2);
