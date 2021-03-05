@@ -59,10 +59,10 @@ class Evento extends Model
                         $model->msg = "Se elimino la receta {$info->nombre}";
                         break;
                     case 301: //Bebiga entregada en bandeja
-                        $model->msg = "Se entrego una bebida en la bandeja {$info->bandeja}, del pedido {$info->idVenta}";
+                        $model->msg = "Se entrego la bebida {$info->idBebida} en la bandeja {$info->bandeja}";
                         break;
                     case 302: //Bebida recogida
-                        $model->msg = "Se recogio una bebida de la bandeja {$info->bandeja}, del pedido {$info->idVenta}";
+                        $model->msg = "Se recogio la bebida {$info->idBebida} de la bandeja {$info->bandeja}";
                         break;
                     case 801: //Arranque sistema de pedidos
                         $model->msg = "Arranque del sistema de pedidos RoboShot. Inicializado";
