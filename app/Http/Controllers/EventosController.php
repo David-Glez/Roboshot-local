@@ -97,8 +97,8 @@ class EventosController extends Controller
             // Bebidas entregadas
             case 301:
             case 302:
-                if(!$this->infoContains($info, ["bandeja, idVenta"]))
-                    return $this->buildInvalidInfoResp(["bandeja, idVenta"]);
+                if(!$this->infoContains($info, ["bandeja, idBebida"]))
+                    return $this->buildInvalidInfoResp(["bandeja, idBebida"]);
                 break;
             case 801:
             case 802:
