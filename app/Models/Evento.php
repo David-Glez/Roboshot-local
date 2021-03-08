@@ -58,10 +58,13 @@ class Evento extends Model
                     case 202: //Receta removida (dar de baja)
                         $model->msg = "Se elimino la receta {$info->nombre}";
                         break;
-                    case 301: //Bebiga entregada en bandeja
+                    case 301:
+                        $model->msg = "Se envio a preparar la bebida {$info->idBebida}, entregar en bandeja {$info->bandeja}";
+                        break;
+                    case 302: //Bebiga entregada en bandeja
                         $model->msg = "Se entrego la bebida {$info->idBebida} en la bandeja {$info->bandeja}";
                         break;
-                    case 302: //Bebida recogida
+                    case 303: //Bebida recogida
                         $model->msg = "Se recogio la bebida {$info->idBebida} de la bandeja {$info->bandeja}";
                         break;
                     case 801: //Arranque sistema de pedidos
