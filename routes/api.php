@@ -61,3 +61,8 @@ Route::get('/eventos', 'EventosController@index');
 Route::post('/eventos', 'EventosController@store');
 Route::get('/eventos/{id}', 'EventosController@show');
 Route::get('/eventos/origen/{origen}', 'EventosController@showByOrigen');
+
+//rutas para los videos
+Route::get('videos','VideosController@index');
+Route::post('videos', 'VideosController@store');
+Route::post('videos/eliminar', 'VideosController@destroy');

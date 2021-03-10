@@ -18,6 +18,10 @@ class BebidasController extends Controller
     {
         $bebida = BebidaVendida::latest('id')->first();
 
+        if($bebida == null){
+            $bebida = ['id' => 0];
+        }
+
         return response()->json($bebida);
     }
 
