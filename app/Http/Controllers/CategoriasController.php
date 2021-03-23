@@ -15,11 +15,13 @@ class CategoriasController extends Controller
     public function anadirCategoria(Request $request){
         $categoria =  new Categorias;
         $categoria->nombre = $request->nombre;
+        $categoria->grupo = $request->grupo;
         $categoria->save();
 
         $datos = array(
             'idCategoria' => $categoria->idCategoria,
-            'nombre' => $categoria->nombre
+            'nombre' => $categoria->nombre,
+            'grupo' => $categoria->grupo
         );
 
         return response()->json($datos);

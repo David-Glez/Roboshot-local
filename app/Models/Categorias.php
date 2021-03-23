@@ -10,6 +10,6 @@ class Categorias extends Model
     protected $table = 'categorias';
     protected $primaryKey = 'idCategoria';
     protected $fillable = [
-        'nombre'
+        'nombre', 'grupo'
     ];
 }

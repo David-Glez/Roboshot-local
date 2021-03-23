@@ -16,40 +16,48 @@ class CategoriaSeeder extends Seeder
     {
         #1
         DB::table('categorias')->insert([
-            'nombre' => 'Tequila'
+            'nombre' => 'Tequila',
+            'grupo' => 4
         ]);
 
         #2
         DB::table('categorias')->insert([
-            'nombre' => 'Vodka'
+            'nombre' => 'Vodka',
+            'grupo' => 4
         ]);
 
         #3
         DB::table('categorias')->insert([
-            'nombre' => 'Ron'
+            'nombre' => 'Ron',
+            'grupo' => 4
         ]);
 
         #4
         DB::table('categorias')->insert([
-            'nombre' => 'Refresco'
+            'nombre' => 'Refresco',
+            'grupo' => 3
         ]);
 
         #5
         DB::table('categorias')->insert([
-            'nombre' => 'Jugos y Jarabes'
+            'nombre' => 'Jugos y Jarabes',
+            'grupo' => 3
         ]);
 
         #6
         DB::table('categorias')->insert([
-            'nombre' => 'Licores'
+            'nombre' => 'Licores',
+            'grupo' => 4
         ]);
         #7
         DB::table('categorias')->insert([
-            'nombre' => 'Solidos'
+            'nombre' => 'Solidos',
+            'grupo' => 1
         ]);
         #7
         DB::table('categorias')->insert([
-            'nombre' => 'Salsas'
+            'nombre' => 'Salsas',
+            'grupo' => 2
         ]);
     }
 }
