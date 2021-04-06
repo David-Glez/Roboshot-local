@@ -31,30 +31,35 @@ class CategoriaSeeder extends Seeder
             'nombre' => 'Ron',
             'grupo' => 4
         ]);
-
         #4
+        DB::table('categorias')->insert([
+            'nombre' => 'Whisky',
+            'grupo' => 4
+        ]);
+
+        #5
         DB::table('categorias')->insert([
             'nombre' => 'Refresco',
             'grupo' => 3
         ]);
 
-        #5
+        #6
         DB::table('categorias')->insert([
             'nombre' => 'Jugos y Jarabes',
             'grupo' => 3
         ]);
 
-        #6
+        #7
         DB::table('categorias')->insert([
             'nombre' => 'Licores',
             'grupo' => 4
         ]);
-        #7
+        #8
         DB::table('categorias')->insert([
             'nombre' => 'Solidos',
             'grupo' => 1
         ]);
-        #8
+        #9
         DB::table('categorias')->insert([
             'nombre' => 'Salsas',
             'grupo' => 2

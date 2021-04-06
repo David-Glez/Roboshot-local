@@ -27,7 +27,7 @@ class RecetasDemoSeeder extends Seeder
 
         // 7solidos
         $hielo = Ingredientes::create([
-            'idCategoria' => 7,
+            'idCategoria' => 8,
             'marca' => 'Hielo',
             'precioCompra' => 0,
             'precioVenta' => 0
@@ -40,7 +40,7 @@ class RecetasDemoSeeder extends Seeder
         ]);
 
         $sal = Ingredientes::create([
-            'idCategoria' => 7,
+            'idCategoria' => 8,
             'marca' => 'Sal',
             'precioCompra' => 0,
             'precioVenta' => 0
@@ -53,7 +53,7 @@ class RecetasDemoSeeder extends Seeder
         ]);
 
         $azucar = Ingredientes::create([
-            'idCategoria' => 7,
+            'idCategoria' => 8,
             'marca' => 'Azucar',
             'precioCompra' => 0,
             'precioVenta' => 0
@@ -146,7 +146,7 @@ class RecetasDemoSeeder extends Seeder
 
         // 4 refrescos
         $coca_cola = Ingredientes::create([
-            'idCategoria' => 4,
+            'idCategoria' => 5,
             'marca' => 'Coca-Cola',
             'precioCompra' => 30,
             'precioVenta' => 90
@@ -159,7 +159,7 @@ class RecetasDemoSeeder extends Seeder
         ]);
 
         $refresco_toronja = Ingredientes::create([
-            'idCategoria' => 4,
+            'idCategoria' => 5,
             'marca' => 'Toronja',
             'precioCompra' => 30,
             'precioVenta' => 90
@@ -172,7 +172,7 @@ class RecetasDemoSeeder extends Seeder
         ]);
 
         $agua_mineral = Ingredientes::create([
-            'idCategoria' => 4,
+            'idCategoria' => 5,
             'marca' => 'Agua Mineral',
             'precioCompra' => 30,
             'precioVenta' => 90
@@ -185,7 +185,7 @@ class RecetasDemoSeeder extends Seeder
         ]);
 
         $agua_quina = Ingredientes::create([
-            'idCategoria' => 4,
+            'idCategoria' => 5,
             'marca' => 'Agua Mineral',
             'precioCompra' => 30,
             'precioVenta' => 90
@@ -199,7 +199,7 @@ class RecetasDemoSeeder extends Seeder
 
         // 5 jugos y jarabes
         $jugo_naranja = Ingredientes::create([
-            'idCategoria' => 5,
+            'idCategoria' => 6,
             'marca' => 'Jugo de Naranja',
             'precioCompra' => 10,
             'precioVenta' => 40
@@ -225,7 +225,7 @@ class RecetasDemoSeeder extends Seeder
         ]);*/
 
         $sangrita = Ingredientes::create([
-            'idCategoria' => 5,
+            'idCategoria' => 6,
             'marca' => 'Sangrita',
             'precioCompra' => 20,
             'precioVenta' => 70
@@ -238,7 +238,7 @@ class RecetasDemoSeeder extends Seeder
         ]);
 
         $granadina = Ingredientes::create([
-            'idCategoria' => 5,
+            'idCategoria' => 6,
             'marca' => 'Granadina',
             'precioCompra' => 20,
             'precioVenta' => 70
@@ -266,7 +266,7 @@ class RecetasDemoSeeder extends Seeder
 
         // 8 salsas
         $limon = Ingredientes::create([
-            'idCategoria' => 8,
+            'idCategoria' => 9,
             'marca' => 'Jugo de Limon',
             'precioCompra' => 5,
             'precioVenta' => 50
@@ -278,7 +278,7 @@ class RecetasDemoSeeder extends Seeder
             'cantidadTotal' => 2000
         ]);
         $inglesa = Ingredientes::create([
-            'idCategoria' => 8,
+            'idCategoria' => 9,
             'marca' => 'Inglesa',
             'precioCompra' => 30,
             'precioVenta' => 90
@@ -291,7 +291,7 @@ class RecetasDemoSeeder extends Seeder
         ]);
 
         $tabasco = Ingredientes::create([
-            'idCategoria' => 8,
+            'idCategoria' => 9,
             'marca' => 'Tabasco',
             'precioCompra' => 30,
             'precioVenta' => 90
