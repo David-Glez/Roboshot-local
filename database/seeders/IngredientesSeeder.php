@@ -69,7 +69,7 @@ class IngredientesSeeder extends Seeder
         ]);
 
         DB::table('ingredientes')->insert([
-            'idCategoria' => 5,
+            'idCategoria' => 8,
             'marca' => 'Jugo de Limón',
             //'cantidadDisponible' => 2000,
             //'posicion' => 7,

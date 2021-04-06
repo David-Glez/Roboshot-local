@@ -54,7 +54,7 @@ class CategoriaSeeder extends Seeder
             'nombre' => 'Solidos',
             'grupo' => 1
         ]);
-        #7
+        #8
         DB::table('categorias')->insert([
             'nombre' => 'Salsas',
             'grupo' => 2

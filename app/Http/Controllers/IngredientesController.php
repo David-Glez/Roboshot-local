@@ -389,7 +389,7 @@ class IngredientesController extends Controller
             // there's enough ingredient in a single ingPos, we're done
             if($ingPos->cantidad >= $cantidadServir)
             {
-                $ing["posiciones"][] = array('posicion' => $ingPos->posicion, 'cantidad' => $cantidadServir);
+                $ing["posiciones"][] = array('posicion' => $ingPos->posicion, 'cantidad' => $cantidadServir, 'unidad' => $ing['unidad']);
                 $ingPos->cantidad -= $cantidadServir;
                 $cantidadServir = 0;
 
@@ -398,7 +398,7 @@ class IngredientesController extends Controller
 
             // there's not enough ingredient here, we gotta visit multiple positions
             // squeeze as much as possible outta this ingredientePosicion
-            $ing["posiciones"][] = array('posicion' => $ingPos->posicion, 'cantidad' => $ingPos->cantidad);
+            $ing["posiciones"][] = array('posicion' => $ingPos->posicion, 'cantidad' => $ingPos->cantidad, 'unidad' => $ing['unidad']);
             $cantidadServir -= $ingPos->cantidad;
             $ingPos->cantidad = 0;
         }
@@ -427,5 +427,51 @@ class IngredientesController extends Controller
 
         return response()->json($bebidas);
 
+    }
+
+    /**Convertir a mililitro o gramos
+     * Eliminar si no  es necesatia a futuro
+     */
+    public function convierteUnidades($cantidad, $unidad)
+    {
+        $DASH = 1;
+        $LIMON = 4;
+        $GOTA = 1;
+        $PIZCA = 1;
+        $CUCHARADA = 2;
+        $SHOT = 30; 
+        $valor = 0;
+
+        switch ($unidad) {
+            case 'dash':
+                $valor = $cantidad * $DASH;
+                break;
+            
+            case 'limon':
+                $valor = $cantidad * $LIMON;
+                break;
+
+            case 'gota':
+                $valor = $cantidad * $GOTA;
+                break;
+
+            case 'pizca':
+                $valor = $cantidad * $PIZCA;
+                break;
+                
+            case 'cucharada':
+                $valor = $cantidad * $CUCHARADA;
+                break;
+            
+            case 'shot':
+                $valor = $cantidad * $SHOT;
+                break;
+            
+            default:
+                $valor = $cantidad;
+                break;
+        }
+
+        return $valor;
     }
 }

@@ -27,7 +27,8 @@ class RecetasController extends Controller
                 $dato = array(
                     "idIngrediente" => $pos->idIngrediente,
                     "marca" => $pos->marca, 
-                    "cantidad" => $i->cantidad
+                    "cantidad" => $i->cantidad,
+                    "unidad" => $i->unidad
                 );
                 $list[] = $dato;
             }
@@ -82,6 +83,7 @@ class RecetasController extends Controller
             $ing->idReceta = $id;
             $ing->idIngrediente = $ing_req["idIngrediente"];
             $ing->cantidad = $ing_req["cantidad"];
+            $ing->unidad = $ing_req["unidad"];
             $ing->save();
 
             $dato = array(

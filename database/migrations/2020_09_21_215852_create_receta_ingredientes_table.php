@@ -17,7 +17,8 @@ class CreateRecetaIngredientesTable extends Migration
             $table->bigIncrements('id')->unique();
             $table->integer('idReceta');
             $table->integer('idIngrediente');
-            $table->decimal('cantidad', 8, 2);
+            $table->integer('cantidad');
+            $table->string('unidad');
             $table->foreign('idReceta')->references('idReceta')->on('recetas')->onDelete('cascade');
             $table->foreign('idIngrediente')->references('idIngrediente')->on('ingredientes');
             $table->timestamps();
